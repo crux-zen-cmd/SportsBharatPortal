@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    (function() {
+      const theme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <title>SportsBharat - National Sports Portal</title>
+  <!-- Preconnect & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/landing.css">
+</head>
+<body>
+
+  <!-- Page Loader -->
+  <div id="page-loader" class="page-loader">
+    <div class="loader-content">
+      <div class="loader-emblem">
+        <div class="loader-ring"></div>
+        <div class="loader-ring loader-ring-2"></div>
+      </div>
+      <div class="loader-text">SportsBharat</div>
+      <div class="loader-bar">
+        <div class="loader-bar-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Navbar -->
+  <nav id="main-navbar" class="navbar">
+    <div class="nav-container">
+      <a href="#home" class="nav-brand">
+        <div class="logo-icon">🇮🇳</div>
+        <div class="brand-text">
+          <span class="brand-title">SportsBharat</span>
+          <span class="brand-subtitle">National Portal</span>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="#home" class="nav-link active">Home</a>
+        <a href="#sports" class="nav-link">Sports</a>
+        <a href="#competitions" class="nav-link">Competitions</a>
+        <a href="#news" class="nav-link">News & Updates</a>
+        <a href="#roles" class="nav-link">Ecosystem</a>
+      </div>
+      <div class="nav-actions">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">
+          <span class="theme-icon">☀️</span>
+        </button>
+        <a href="/pages/auth/login.html" class="btn btn-primary">Portal Login</a>
+        <button id="hamburger" class="hamburger" aria-label="Toggle Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="mobile-menu">
+    <a href="#home" class="mobile-nav-link">Home</a>
+    <a href="#sports" class="mobile-nav-link">Sports</a>
+    <a href="#competitions" class="mobile-nav-link">Competitions</a>
+    <a href="#news" class="mobile-nav-link">News & Updates</a>
+    <a href="#roles" class="mobile-nav-link">Ecosystem</a>
+    <div class="mobile-menu-actions">
+      <a href="/pages/auth/login.html" class="btn btn-primary" style="width: 100%;">Portal Login</a>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <header id="home" class="hero-section">
+    <div class="hero-particles"></div>
+    <div class="hero-bg-gradient"></div>
+    <div class="container hero-container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          <span>Live Tournament Tracker</span>
+        </div>
+        <h1 class="hero-title">
+          <span class="title-line">Empowering Indian Sports</span>
+          <span class="title-line gradient-text">From Grassroots to Glory</span>
+        </h1>
+        <p class="hero-subtitle">
+          The unified national portal for athletes, organizers, and officials. Discover events, track live scores, manage competitions, and build the future of Indian sports.
+        </p>
+        <div class="hero-actions">
+          <a href="#competitions" class="btn btn-primary btn-lg">Explore Events</a>
+          <a href="/pages/auth/login.html" class="btn btn-ghost btn-lg">Register Now</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number" data-target="10000">0</span><span class="stat-suffix">+</span>
+            <span class="stat-label">Athletes</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number" data-target="500">0</span><span class="stat-suffix">+</span>
+            <span class="stat-label">Events</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number" data-target="30">0</span><span class="stat-suffix">+</span>
+            <span class="stat-label">Sports</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-floating-cards">
+        <a href="#competitions" class="float-card float-card-1">
+          <div class="card-icon">🏆</div>
+          <div class="card-text">
+            <h4>Live Scores</h4>
+            <p>Real-time updates</p>
+          </div>
+        </a>
+        <a href="#roles" class="float-card float-card-2">
+          <div class="card-icon">🥇</div>
+          <div class="card-text">
+            <h4>Rankings</h4>
+            <p>National Leaderboard</p>
+          </div>
+        </a>
+        <a href="#competitions" class="float-card float-card-3">
+          <div class="card-icon">📅</div>
+          <div class="card-text">
+            <h4>Schedules</h4>
+            <p>Upcoming Tournaments</p>
+          </div>
+        </a>
+        <a href="#roles" class="float-card float-card-4">
+          <div class="card-icon">🏅</div>
+          <div class="card-text">
+            <h4>Talent Hunt</h4>
+            <p>Grassroots Scouting</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sports Section -->
+  <section id="sports" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge badge-success section-badge">Disciplines</span>
+        <h2 class="section-title">Popular Sports</h2>
+        <p class="section-desc">Discover active sporting disciplines across the nation. Click on a sport to view events.</p>
+      </div>
+      <div id="sports-grid" class="sports-grid">
+        <!-- Dynamically populated by landing.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Competitions Section -->
+  <section id="competitions" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge badge-warning section-badge">Live Events</span>
+        <h2 class="section-title">Active Tournaments</h2>
+        <p class="section-desc">Search, filter, and track live tournament action from around the country.</p>
+      </div>
+      
+      <div class="filter-bar">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="comp-search" placeholder="Search competitions...">
+        </div>
+        <div class="filter-options">
+          <select id="filter-sport" class="filter-select">
+            <option value="all">All Sports</option>
+            <option value="cricket">Cricket</option>
+            <option value="football">Football</option>
+            <option value="kabaddi">Kabaddi</option>
+            <option value="badminton">Badminton</option>
+          </select>
+          <select id="filter-status" class="filter-select">
+            <option value="all">All Status</option>
+            <option value="live">Live Now</option>
+            <option value="upcoming">Upcoming</option>
+            <option value="completed">Completed</option>
+          </select>
+          <select id="filter-state" class="filter-select">
+            <option value="all">All States</option>
+            <option value="Delhi">Delhi</option>
+            <option value="Maharashtra">Maharashtra</option>
+            <option value="Karnataka">Karnataka</option>
+            <option value="Haryana">Haryana</option>
+          </select>
+        </div>
+      </div>
+      
+      <div id="competitions-grid" class="competitions-grid">
+        <!-- Dynamically populated by landing.js with skeletons initially -->
+        <div class="glass-card competition-card skeleton">
+          <div class="skeleton-title"></div>
+          <div class="skeleton-text"></div>
+          <div class="skeleton-text"></div>
+        </div>
+        <div class="glass-card competition-card skeleton">
+          <div class="skeleton-title"></div>
+          <div class="skeleton-text"></div>
+          <div class="skeleton-text"></div>
+        </div>
+        <div class="glass-card competition-card skeleton">
+          <div class="skeleton-title"></div>
+          <div class="skeleton-text"></div>
+          <div class="skeleton-text"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- News Section -->
+  <section id="news" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge badge-danger section-badge">Highlights</span>
+        <h2 class="section-title">Latest Announcements</h2>
+        <p class="section-desc">Stay updated with official announcements, policy changes, and news from SportsBharat.</p>
+      </div>
+      <div class="news-carousel">
+        <div id="news-track" class="news-track">
+          <!-- Dynamically populated by landing.js -->
+        </div>
+        <div class="carousel-controls">
+          <button id="news-prev" class="carousel-btn" aria-label="Previous News">◀</button>
+          <div id="carousel-dots" class="carousel-dots"></div>
+          <button id="news-next" class="carousel-btn" aria-label="Next News">▶</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ecosystem / Roles Section -->
+  <section id="roles" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge badge-success section-badge">Participate</span>
+        <h2 class="section-title">Join the Ecosystem</h2>
+        <p class="section-desc">Whether you are an aspiring athlete, an experienced event organizer, or a national official.</p>
+      </div>
+      <div class="roles-grid">
+        <div class="glass-card role-card">
+          <div class="role-icon">🏃‍♂️</div>
+          <h3 class="role-title">Athletes</h3>
+          <p class="role-desc">Create your official national profile, register for tournaments, track performance stats, and get scouted by national coaches.</p>
+          <ul class="role-features">
+            <li>✓ Official Digital Profile</li>
+            <li>✓ Direct Tournament Registration</li>
+            <li>✓ Performance Tracking & Stats</li>
+            <li>✓ National Scouting Eligibility</li>
+          </ul>
+          <a href="/pages/auth/login.html" class="btn btn-outline" style="margin-top: 1.5rem;">Join as Athlete</a>
+        </div>
+        <div class="glass-card role-card role-card-featured">
+          <div class="badge badge-warning role-badge-featured">Featured</div>
+          <div class="role-icon">📅</div>
+          <h3 class="role-title">Organizers</h3>
+          <p class="role-desc">Access direct tools to schedule matches, manage participant registrations, dynamically update live scores, and print digital certificates.</p>
+          <ul class="role-features">
+            <li>✓ Match Scheduler & Brackets</li>
+            <li>✓ Live Score Console</li>
+            <li>✓ Dynamic Certificate Generation</li>
+            <li>✓ Registration Verification Manager</li>
+          </ul>
+          <a href="/pages/auth/login.html" class="btn btn-primary" style="margin-top: 1.5rem;">Join as Organizer</a>
+        </div>
+        <div class="glass-card role-card">
+          <div class="role-icon">⚖️</div>
+          <h3 class="role-title">Admins & Officials</h3>
+          <p class="role-desc">Approve tournament structures, review official registrations, manage portal compliance, and access the national talent database.</p>
+          <ul class="role-features">
+            <li>✓ Compliance & Verification Console</li>
+            <li>✓ Live Event Supervision</li>
+            <li>✓ National Talent Database Insights</li>
+            <li>✓ Portal Administration Tools</li>
+          </ul>
+          <a href="/pages/auth/login.html" class="btn btn-outline" style="margin-top: 1.5rem;">Join as Admin</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Achievements Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge badge-success section-badge">Milestones</span>
+        <h2 class="section-title">Our Achievements</h2>
+        <p class="section-desc">Celebrating the milestones and growth of the SportsBharat national ecosystem.</p>
+      </div>
+      <div class="achievements-grid">
+        <div class="glass-card achievement-card">
+          <div class="ach-icon">🌟</div>
+          <h3>100K+ Registrations</h3>
+          <p>Active participants across all states.</p>
+        </div>
+        <div class="glass-card achievement-card">
+          <div class="ach-icon">🏟️</div>
+          <h3>1000+ Arenas</h3>
+          <p>Registered and verified playing facilities.</p>
+        </div>
+        <div class="glass-card achievement-card">
+          <div class="ach-icon">🤝</div>
+          <h3>50+ Federations</h3>
+          <p>Official partnerships with state federations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Footer -->
+  <footer class="main-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="brand-logo-lg">🇮🇳 SportsBharat</div>
+        <p>National Sports Management & Competition Portal. Under-development by the Ministry of Youth Affairs and Sports.</p>
+        <div class="social-links">
+          <a href="#" class="social-link">𝕏</a>
+          <a href="#" class="social-link">👤</a>
+          <a href="#" class="social-link">📸</a>
+          <a href="#" class="social-link">📺</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Ecosystem</h4>
+        <a href="#sports">Sport Disciplines</a>
+        <a href="#competitions">Tournaments</a>
+        <a href="#news">Portal News</a>
+        <a href="/pages/auth/login.html">Login Portal</a>
+      </div>
+      <div class="footer-links">
+        <h4>Legal</h4>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Compliance</a>
+        <a href="#">Disclaimer</a>
+      </div>
+      <div class="footer-links">
+        <h4>Support</h4>
+        <a href="#">Help Center</a>
+        <a href="#">Contact Us</a>
+        <a href="#">Feedback</a>
+        <a href="#">Report Bug</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>&copy; 2026 SportsBharat Portal. Developed under the National Digital Sports Initiative.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="/js/landing.js"></script>
+</body>
+</html>

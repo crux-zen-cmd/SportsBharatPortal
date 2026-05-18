@@ -1,0 +1,22 @@
+{
+  "short_name": "SportsBharat",
+  "name": "National Sports Management & Competition Portal",
+  "description": "Government of India official National Sports Management & Competition Portal",
+  "icons": [
+    {
+      "src": "assets/icons/logo-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "assets/icons/logo-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/index.html",
+  "background_color": "#090d16",
+  "theme_color": "#1e3a8a",
+  "display": "standalone",
+  "orientation": "portrait"
+}

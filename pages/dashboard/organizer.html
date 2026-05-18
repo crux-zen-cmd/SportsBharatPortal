@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    (function() {
+      const theme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <title>Organizer Dashboard | SportsBharat</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet" />
+
+  <!-- CSS Styles -->
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/landing.css" />
+  <link rel="stylesheet" href="../../css/dashboards.css" />
+
+  <!-- Chart.js for premium vector analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- Page Loader -->
+  <div id="page-loader" class="page-loader">
+    <div class="loader-content">
+      <div class="loader-emblem">
+        <div class="loader-ring"></div>
+        <div class="loader-ring loader-ring-2"></div>
+      </div>
+      <p class="loader-text">Loading Organizer Workspace</p>
+    </div>
+  </div>
+
+  <div class="dash-wrapper">
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <span>🏆</span>
+          <div class="sidebar-logo-text">
+            SportsBharat
+            <small>Organizer Workspace</small>
+          </div>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li><div class="sidebar-link active" data-target="panel-overview">📊 Dashboard Summary</div></li>
+        <li><div class="sidebar-link" data-target="panel-create">➕ Create Competition</div></li>
+        <li><div class="sidebar-link" data-target="panel-registrations">👥 Manage Entries</div></li>
+        <li><div class="sidebar-link" data-target="panel-attendance">📋 Attendance Manager</div></li>
+        <li><div class="sidebar-link" data-target="panel-news-builder">📰 Publish Sports News</div></li>
+      </ul>
+      <div class="sidebar-footer">
+        <button id="logout-btn" class="btn btn-ghost" style="width: 100%;">Sign Out</button>
+      </div>
+    </aside>
+
+    <!-- ===== MAIN WORKSPACE ===== -->
+    <main class="main-workspace">
+      <!-- ===== TOPBAR ===== -->
+      <header class="topbar">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <button class="sidebar-toggle-btn" id="sidebar-toggle">☰</button>
+          <div style="font-weight: 700; font-family: var(--font-display); font-size: 1.25rem;">Government of India</div>
+        </div>
+        <div class="topbar-actions">
+          <!-- Notification Bell -->
+          <div class="notif-bell" id="notif-toggle">
+            🔔 <span class="notif-count" id="notif-badge-count">0</span>
+          </div>
+
+          <!-- Theme Toggle -->
+          <button class="theme-toggle" id="theme-toggle" style="background: none;">
+            <span class="theme-icon">🌙</span>
+          </button>
+
+          <!-- Profile Badge -->
+          <div class="profile-pill">
+            <div class="profile-avatar" id="avatar-circle">O</div>
+            <div class="profile-meta-text">
+              <span class="profile-meta-name" id="org-display-name">Dr. Sunita Sharma</span>
+              <span class="profile-meta-role">Sports Organizer</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- ===== CONTENT VIEWPORT ===== -->
+      <div class="dash-content">
+        
+        <!-- ==========================================
+             PANEL 1: ANALYTICS OVERVIEW
+             ========================================== -->
+        <div class="dash-panel active" id="panel-overview">
+          <div class="dash-header">
+            <div>
+              <h2 class="dash-title">Organizer Analytics</h2>
+              <p class="dash-subtitle">Track your sports events, participant growth, and popularity trends.</p>
+            </div>
+          </div>
+
+          <div class="summary-grid">
+            <div class="glass-card summary-card">
+              <div class="summary-icon-box" style="background: rgba(249, 115, 22, 0.1); color: var(--accent);">🏆</div>
+              <div class="summary-info">
+                <span class="summary-label">Created Competitions</span>
+                <span class="summary-val" id="stats-created-comps">0</span>
+              </div>
+            </div>
+            <div class="glass-card summary-card">
+              <div class="summary-icon-box" style="background: rgba(34, 197, 94, 0.1); color: var(--success);">👥</div>
+              <div class="summary-info">
+                <span class="summary-label">Total Applications</span>
+                <span class="summary-val" id="stats-total-entries">0</span>
+              </div>
+            </div>
+            <div class="glass-card summary-card">
+              <div class="summary-icon-box" style="background: rgba(168, 85, 247, 0.1); color: #a855f7;">⚡</div>
+              <div class="summary-info">
+                <span class="summary-label">Approval Rate</span>
+                <span class="summary-val" id="stats-approval-rate">0%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Vector Graphs Section -->
+          <div class="dashboard-grid" style="margin-bottom: 2rem;">
+            <div class="glass-card">
+              <h3 class="panel-section-title">📈 Registration Growth Trends</h3>
+              <div style="height: 300px; position: relative;">
+                <canvas id="growthChart"></canvas>
+              </div>
+            </div>
+
+            <div class="glass-card">
+              <h3 class="panel-section-title">📊 Athlete Gender Split</h3>
+              <div style="height: 300px; position: relative;">
+                <canvas id="genderChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-grid">
+            <div class="glass-card">
+              <h3 class="panel-section-title">🎯 Popularity by Sport Category</h3>
+              <div style="height: 300px; position: relative;">
+                <canvas id="sportChart"></canvas>
+              </div>
+            </div>
+            
+            <div class="glass-card">
+              <h3 class="panel-section-title">📅 Quick Active Tournaments</h3>
+              <ul class="role-features" id="quick-comps-list" style="padding-left: 0;">
+                <!-- dynamic -->
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             PANEL 2: CREATE COMPETITION BUILDER
+             ========================================== -->
+        <div class="dash-panel" id="panel-create">
+          <div class="dash-header">
+            <div>
+              <h2 class="dash-title">Create New Competition</h2>
+              <p class="dash-subtitle">Upload and broadcast new athletic matches to users nationwide.</p>
+            </div>
+          </div>
+
+          <form id="comp-create-form" class="glass-card" style="max-width: 850px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+              <div class="form-group" style="grid-column: 1/-1;">
+                <label class="form-label" for="comp-title">Competition Title</label>
+                <input type="text" id="comp-title" class="form-control" placeholder="E.g., All-India Youth Tennis League" required />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="comp-sport">Sport Discipline</label>
+                <select id="comp-sport" class="form-control" required>
+                  <option>Cricket</option><option>Football</option><option>Kabaddi</option>
+                  <option>Basketball</option><option>Athletics</option><option>Chess</option>
+                  <option>Badminton</option><option>Hockey</option><option>Volleyball</option>
+                  <option>Swimming</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="comp-date">Date &amp; Time</label>
+                <input type="datetime-local" id="comp-date" class="form-control" required />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="comp-venue">Venue Address</label>
+                <input type="text" id="comp-venue" class="form-control" placeholder="M. Chinnaswamy Stadium, Bangalore" required />
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                  <label class="form-label" for="comp-city">City</label>
+                  <input type="text" id="comp-city" class="form-control" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="comp-state">State</label>
+                  <input type="text" id="comp-state" class="form-control" required />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="comp-max">Maximum Participants</label>
+                <input type="number" id="comp-max" class="form-control" placeholder="200" min="10" required />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="comp-fee">Registration Fee (INR) <small style="color:var(--text-muted);">0 for Free</small></label>
+                <input type="number" id="comp-fee" class="form-control" placeholder="0" required />
+              </div>
+
+              <div class="form-group" style="grid-column: 1/-1;">
+                <label class="form-label" for="comp-rules">Competition Rules / Instructions</label>
+                <textarea id="comp-rules" class="form-control" rows="3" placeholder="Enter standard code of conduct..." required></textarea>
+              </div>
+
+              <div class="form-group" style="grid-column: 1/-1;">
+                <label class="form-label" for="comp-prize">Prize Pool / Rewards Description</label>
+                <textarea id="comp-prize" class="form-control" rows="2" placeholder="E.g., ₹5,00,000 Aggregate reward pool + direct certificate validation" required></textarea>
+              </div>
+
+              <div class="form-group" style="grid-column: 1/-1;">
+                <label class="form-label" for="comp-desc">Short Event Description</label>
+                <textarea id="comp-desc" class="form-control" rows="2" placeholder="Highlight key aspects..." required></textarea>
+              </div>
+
+              <div class="form-group" style="grid-column: 1/-1;">
+                <label class="form-label">Event Banner File</label>
+                <div style="border: 2px dashed var(--glass-border); padding: 2rem; border-radius: var(--radius-md); text-align: center;">
+                  <span style="font-size: 2rem; display: block; margin-bottom: 0.5rem;">🖼️</span>
+                  <label class="form-label" style="cursor: pointer; color: var(--primary-light);">
+                    Browse banner image files
+                    <input type="file" id="comp-banner-file" style="display: none;" accept="image/*" />
+                  </label>
+                  <div id="banner-preview-text" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;">Default government placeholder applied if none chosen</div>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="margin-top: 1.5rem; padding: 0.85rem 3rem;">Publish &amp; Deploy Event</button>
+          </form>
+        </div>
+
+        <!-- ==========================================
+             PANEL 3: MANAGE ENTRIES / REGISTRATIONS
+             ========================================== -->
+        <div class="dash-panel" id="panel-registrations">
+          <div class="dash-header">
+            <div>
+              <h2 class="dash-title">Manage Registrations</h2>
+              <p class="dash-subtitle">Review, filter and approve athlete enrollment applications.</p>
+            </div>
+            <!-- Excel / CSV Export -->
+            <button onclick="window.exportToCSV()" class="btn btn-outline">📂 Export Entries to CSV</button>
+          </div>
+
+          <div class="filter-bar">
+            <select id="reg-comp-filter" class="filter-select" style="min-width: 250px;">
+              <option value="">All Created Competitions</option>
+            </select>
+            <select id="reg-status-filter" class="filter-select">
+              <option value="">All Verification Status</option>
+              <option value="pending">Pending Approval</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+
+          <div class="glass-card">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Athlete Name</th>
+                    <th>Competition</th>
+                    <th>Role Applied</th>
+                    <th>ID Document</th>
+                    <th>Status</th>
+                    <th>Action Hooks</th>
+                  </tr>
+                </thead>
+                <tbody id="registrations-table-body">
+                  <!-- Dynamic lists -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             PANEL 4: ATTENDANCE MANAGEMENT SYSTEM
+             ========================================= -->
+        <div class="dash-panel" id="panel-attendance">
+          <div class="dash-header">
+            <div>
+              <h2 class="dash-title">Attendance Management System</h2>
+              <p class="dash-subtitle">Validate player presence at the venue via secure ID codes or QR scans.</p>
+            </div>
+            <!-- Simulated QR scanner hook -->
+            <button class="btn btn-primary" id="open-qr-scanner-btn">📷 Scan QR Code</button>
+          </div>
+
+          <div class="glass-card">
+            <h3 class="panel-section-title">Enrollment Validation Registry</h3>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Participant Name</th>
+                    <th>Sports Competition</th>
+                    <th>Role Mode</th>
+                    <th>Presence Seal</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="attendance-table-body">
+                  <!-- Dynamic attendances checks -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             PANEL 5: PUBLISH SPORTS NEWS / ANNOUNCEMENTS
+             ========================================== -->
+        <div class="dash-panel" id="panel-news-builder">
+          <div class="dash-header">
+            <div>
+              <h2 class="dash-title">Publish Sports Bulletins</h2>
+              <p class="dash-subtitle">Post announcements, alerts, and news articles on the landing page.</p>
+            </div>
+          </div>
+
+          <form id="news-publish-form" class="glass-card" style="max-width: 800px;">
+            <div class="form-group">
+              <label class="form-label" for="news-title">Article / Announcement Title</label>
+              <input type="text" id="news-title" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="news-excerpt">Short Excerpt (Displayed on Landing Cards)</label>
+              <input type="text" id="news-excerpt" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="news-content">Full Press Release Text</label>
+              <textarea id="news-content" class="form-control" rows="5" required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Article Header Cover File</label>
+              <input type="file" id="news-image-file" class="form-control" accept="image/*" />
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="padding: 0.85rem 3rem;">Broadcast News Feed</button>
+          </form>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ===== NOTIFICATION DRAWER ===== -->
+  <div class="notif-drawer" id="notif-drawer">
+    <div class="notif-drawer-header">
+      <h3 style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 700;">Alert Notifications</h3>
+      <button class="btn btn-ghost" id="notif-close-btn" style="padding: 0.25rem 0.5rem;">✕</button>
+    </div>
+    <div class="notif-list-body" id="notif-drawer-body">
+      <!-- Dynamic list -->
+    </div>
+  </div>
+
+  <!-- ===== QR CAMERA SIMULATOR MODAL ===== -->
+  <div class="modal-overlay" id="qr-modal">
+    <div class="modal-content" style="max-width: 480px; text-align: center;">
+      <span class="modal-close" id="qr-modal-close">✕</span>
+      <h3 class="panel-section-title">📷 Government QR Verification</h3>
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">Scanning digital sports pass for instant presence verification...</p>
+      
+      <!-- Simulated Camera scan interface -->
+      <div style="background: #000; height: 260px; border-radius: 12px; position: relative; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+        <div style="border: 3px solid var(--accent); width: 180px; height: 180px; border-radius: 8px; position: relative;">
+          <!-- Laser scanning effect -->
+          <div style="position: absolute; width: 100%; height: 2px; background: red; top: 0; left: 0; animation: laser-scan 2.5s linear infinite; box-shadow: 0 0 10px red;"></div>
+        </div>
+      </div>
+
+      <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
+        <input type="text" id="qr-manual-code" class="form-control" placeholder="Or enter Secure ID Proof manually..." />
+        <button class="btn btn-primary" id="qr-simulate-btn">Simulate Successful Scan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script type="module" src="../../js/firebase-config.js"></script>
+  <script type="module" src="../../js/organizer-dash.js"></script>
+</body>
+</html>

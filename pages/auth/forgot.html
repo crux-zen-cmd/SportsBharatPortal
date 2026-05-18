@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    (function() {
+      const theme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <title>Reset Password | National Sports Portal</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/landing.css" />
+  <style>
+    .auth-wrapper {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 1rem;
+      background: var(--bg-primary);
+      position: relative;
+    }
+    .auth-card {
+      max-width: 450px;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+    .auth-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .auth-logo {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .auth-title {
+      font-family: var(--font-display);
+      font-size: 2.25rem;
+      font-weight: 800;
+    }
+    .auth-subtitle {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+    .auth-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+    .auth-footer a {
+      color: var(--primary-light);
+      font-weight: 600;
+    }
+    .back-home {
+      position: absolute;
+      top: 2rem;
+      left: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <a href="login.html" class="back-home btn btn-ghost">← Back to Login</a>
+
+  <div class="auth-wrapper">
+    <div class="auth-card glass-card">
+      <div class="auth-header">
+        <div class="auth-logo">🔑</div>
+        <h1 class="auth-title">Reset Password</h1>
+        <p class="auth-subtitle">Verify your identity and recover access</p>
+      </div>
+
+      <form id="forgot-form">
+        <div class="form-group">
+          <label class="form-label" for="forgot-email">Registered Email Address</label>
+          <input type="email" id="forgot-email" class="form-control" placeholder="E.g., athlete@sports.gov.in" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem; margin-top: 1rem;">
+          Send Reset Instructions
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        Remembered password? <a href="login.html">Sign In instead</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script type="module">
+    import { SportsPortal } from '../../js/firebase-config.js';
+    
+    // Simple Toast Helper
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type} show`;
+      toast.innerHTML = `
+        <span>${type === 'success' ? '✅' : type === 'danger' ? '❌' : '⚠️'}</span>
+        <div>${message}</div>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    document.getElementById('forgot-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('forgot-email').value;
+      showToast(`A secure recovery link has been dispatched to ${email}. Check your government inbox!`, 'success');
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 2000);
+    });
+  </script>
+</body>
+</html>
