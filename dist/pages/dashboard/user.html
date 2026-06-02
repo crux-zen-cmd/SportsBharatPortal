@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    (function() {
+      const theme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <title>Athlete Dashboard | SportsBharat</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet" />
+
+  <!-- CSS Styles -->
+  <script type="module" crossorigin src="/assets/user-DZZ8ziBW.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/firebase-config-FYaKDP7r.js">
+  <link rel="modulepreload" crossorigin href="/assets/auth-Ct-q7bEl.js">
+  <link rel="stylesheet" crossorigin href="/assets/landing-B5wQRWK3.css">
+  <link rel="stylesheet" crossorigin href="/assets/dashboards-JgFWNg5Z.css">
+</head>
+<body>
+  <!-- Page Loader -->
+  <div id="page-loader" class="page-loader">
+    <div class="loader-content">
+      <div class="loader-emblem">
+        <div class="loader-ring"></div>
+        <div class="loader-ring loader-ring-2"></div>
+      </div>
+      <p class="loader-text">Loading Athlete Workspace</p>
+    </div>
+  </div>
+
+  <div class="dash-wrapper">
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <span>🏆</span>
+          <div class="sidebar-logo-text">
+            SportsBharat
+            <small>Athlete Workspace</small>
+          </div>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li><div class="sidebar-link active" data-target="panel-home">🏃 Overview</div></li>
+        <li><div class="sidebar-link" data-target="panel-profile">👤 Profile Manager</div></li>
+        <li><div class="sidebar-link" data-target="panel-competitions">🔍 Explore Events</div></li>
+        <li><div class="sidebar-link" data-target="panel-calendar">📅 Event Calendar</div></li>
+        <li><div class="sidebar-link" data-target="panel-news">📢 Sports News</div></li>
+        <li><div class="sidebar-link" data-target="panel-certificates">📜 Certificates</div></li>
+      </ul>
+      <div class="sidebar-footer">
+        <button id="logout-btn" class="btn btn-ghost" style="width: 100%;">Sign Out</button>
+      </div>
+    </aside>
+
+    <!-- ===== MAIN WORKSPACE ===== -->
+    <main class="main-workspace">
+      <!-- ===== TOPBAR ===== -->
+      <header class="topbar">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <button class="sidebar-toggle-btn" id="sidebar-toggle" aria-label="Toggle navigation">☰</button>
+          <div style="font-weight: 700; font-family: var(--font-display); font-size: 1.25rem;">Government of India</div>
+        </div>
+        <div class="topbar-actions">
+          <!-- Notification Bell -->
+          <div class="notif-bell" id="notif-toggle">
+            🔔 <span class="notif-count" id="notif-badge-count">0</span>
+          </div>
+
+          <!-- Theme Toggle -->
+          <button class="theme-toggle" id="theme-toggle" style="background: none;">
+            <span class="theme-icon">🌙</span>
+          </button>
+
+          <!-- Profile Badge -->
+          <div class="profile-pill">
+            <div class="profile-avatar" id="avatar-circle">U</div>
+            <div class="profile-meta-text">
+              <span class="profile-meta-name" id="user-display-name">Athlete Name</span>
+              <span class="profile-meta-role">Athlete</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- ===== CONTENT VIEWPORT ===== -->
+      <div class="dash-content">
+        
+        <!-- ==========================================
+             PANEL 1: PERSONALIZED OVERVIEW
+             ========================================== -->
+        <div class="dash-panel active" id="panel-home">
+          <div class="dash-header">
+            <div>
+              <h2 class="dash-title">Jai Hind, <span id="welcome-name" class="gradient-text">Athlete</span>!</h2>
+              <p class="dash-subtitle">Here is your current athletic standing and upcoming schedule.</p>
+            </div>
+            <!-- Live Match Highlight widget -->
+            <div id="live-match-banner" class="glass-card" style="padding: 1rem 1.5rem; display: flex; gap: 1rem; align-items: center; border-color: var(--accent);">
+              <span style="font-size: 1.5rem; animation: pulse 1s infinite;">🔴</span>
+              <div>
+                <small style="color: var(--accent); font-weight: 700;">LIVE SCORE INTEGRATION</small>
+                <div id="live-score-text" style="font-weight: 600; font-size: 0.9rem;">Connecting to scoring services...</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Summary cards -->
+          <div class="summary-grid">
+            <div class="glass-card summary-card">
+              <div class="summary-icon-box">🏃</div>
+              <div class="summary-info">
+                <span class="summary-label">Registered Events</span>
+                <span class="summary-val" id="stats-reg-count">0</span>
+              </div>
+            </div>
+            <div class="glass-card summary-card">
+              <div class="summary-icon-box">🏆</div>
+              <div class="summary-info">
+                <span class="summary-label">Badges Earned</span>
+                <span class="summary-val" id="stats-badge-count">1</span>
+              </div>
+            </div>
+            <div class="glass-card summary-card">
+              <div class="summary-icon-box">📜</div>
+              <div class="summary-info">
+                <span class="summary-label">Certificates Ready</span>
+                <span class="summary-val" id="stats-cert-count">0</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-grid">
+            <!-- Left Panel Column -->
+            <div style="display: flex; flex-direction: column; gap: 2rem;">
+              <!-- Favorite Sports Setup initially -->
+              <div class="glass-card">
+                <h3 class="panel-section-title">⭐ Favorite Sports Interests</h3>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">Select your favorite sports disciplines to get tailored recommendations.</p>
+                <div class="interest-badges-wrap" id="interest-selector">
+                  <!-- JS binds tags -->
+                </div>
+              </div>
+
+              <!-- Recommended Competitions -->
+              <div class="glass-card">
+                <h3 class="panel-section-title">🎯 Recommended for You</h3>
+                <div class="competitions-grid" id="rec-comps-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); margin-bottom: 0;">
+                  <!-- Bounded by script -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Panel Column -->
+            <div style="display: flex; flex-direction: column; gap: 2rem;">
+              <!-- Badges Showcase -->
+              <div class="glass-card">
+                <h3 class="panel-section-title">🎖️ Badge System</h3>
+                <div class="badge-item-grid" id="badge-showcase">
+                  <!-- Dynamic -->
+                </div>
+              </div>
+
+              <!-- Activity Logs -->
+              <div class="glass-card">
+                <h3 class="panel-section-title">🕒 Recent Activity</h3>
+                <ul class="role-features" id="activity-log" style="padding-left: 0;">
+                  <!-- Dynamic history list -->
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             PANEL 2: PROFILE MANAGER
+             ========================================== -->
+        <div class="dash-panel" id="panel-profile">
+          <div class="dash-header">
+            <div>
+              <h2 class="dash-title">Profile Manager</h2>
+              <p class="dash-subtitle">Modify your public profile and sports interests.</p>
+            </div>
+          </div>
+
+          <form id="profile-edit-form" class="glass-card" style="max-width: 800px;">
+            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
+              <!-- Left section photo upload -->
+              <div style="text-align: center;">
+                <div class="profile-avatar" id="edit-avatar-preview" style="width: 150px; height: 150px; font-size: 4rem; margin: 0 auto 1rem; border-radius: 50%;">U</div>
+                <div class="form-group">
+                  <label class="form-label" style="cursor: pointer; color: var(--primary-light);">
+                    📷 Upload Photo
+                    <input type="file" id="profile-photo-input" style="display: none;" accept="image/*" />
+                  </label>
+                </div>
+              </div>
+
+              <!-- Right form fields -->
+              <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <div class="form-group">
+                  <label class="form-label" for="edit-name">Full Name</label>
+                  <input type="text" id="edit-name" class="form-control" required />
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                  <div class="form-group">
+                    <label class="form-label" for="edit-age">Age</label>
+                    <input type="number" id="edit-age" class="form-control" required />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="edit-gender">Gender</label>
+                    <select id="edit-gender" class="form-control">
+                      <option>Male</option><option>Female</option><option>Other</option>
+                    </select>
+                  </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                  <div class="form-group">
+                    <label class="form-label" for="edit-city">City</label>
+                    <input type="text" id="edit-city" class="form-control" required />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="edit-state">State</label>
+                    <input type="text" id="edit-state" class="form-control" required />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="edit-contact">Contact Number</label>
+                  <input type="tel" id="edit-contact" class="form-control" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="edit-skills">Skills Overview</label>
+                  <input type="text" id="edit-skills" class="form-control" placeholder="E.g., Opening Batsman, Freestyle Swimmer" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="edit-bio">Biography</label>
+                  <textarea id="edit-bio" class="form-control" rows="3" placeholder="Briefly describe your sport journey..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="align-self: flex-start; padding: 0.85rem 2rem;">Save Profile Settings</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- ==========================================
+             PANEL 3: EXPLORE COMPETITIONS
+             ========================================== -->
+        <div class="dash-panel" id="panel-competitions">
+          <div class="dash-header">
+            <div>
+              <h2 class="dash-title">Explore Competitions</h2>
+              <p class="dash-subtitle">Browse, filter, and register for sporting events across the country.</p>
+            </div>
+          </div>
+
+          <!-- Search filter bar -->
+          <div class="filter-bar">
+            <div class="search-box">
+              <span>🔍</span>
+              <input type="text" id="dash-comp-search" placeholder="Search title or venue..." />
+            </div>
+            <select id="dash-filter-sport" class="filter-select">
+              <option value="">All Sports</option>
+            </select>
+            <select id="dash-filter-state" class="filter-select">
+              <option value="">All States</option>
+            </select>
+          </div>
+
+          <div class="competitions-grid" id="dash-competitions-grid">
+            <!-- Bound dynamically -->
+          </div>
+        </div>
+
+        <!-- ==========================================
+             PANEL 4: EVENT CALENDAR VIEW
+             ========================================== -->
+        <div class="dash-panel" id="panel-calendar">
+          <div class="dash-header">
+            <div>
+              <h2 class="dash-title">Event Calendar</h2>
+              <p class="dash-subtitle">Track dates and schedules for competitions you participate in.</p>
+            </div>
+          </div>
+
+          <div class="dashboard-grid">
+            <div class="calendar-view">
+              <div class="calendar-header">
+                <button class="btn btn-ghost" id="prev-month-btn">‹</button>
+                <h3 id="calendar-month-label" style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 700;">May 2026</h3>
+                <button class="btn btn-ghost" id="next-month-btn">›</button>
+              </div>
+              <div class="calendar-grid" id="calendar-days-container">
+                <!-- Days labels and numbers injected dynamically -->
+              </div>
+            </div>
+
+            <div class="glass-card">
+              <h3 class="panel-section-title">Upcoming Dates</h3>
+              <div id="calendar-event-details">
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">Select a highlighted calendar day to view matching sports events schedule.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             PANEL 5: SPORTS NEWS FEED
+             ========================================== -->
+        <div class="dash-panel" id="panel-news">
+          <div class="dash-header">
+            <div>
+              <h2 class="dash-title">National Sports News &amp; Bulletins</h2>
+              <p class="dash-subtitle">Official press releases and government sports schemes updates.</p>
+            </div>
+          </div>
+
+          <div class="dashboard-grid" id="news-dashboard-grid" style="grid-template-columns: 2fr 1fr;">
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;" id="news-items-container">
+              <!-- Dynamically added -->
+            </div>
+            
+            <div class="glass-card" style="height: fit-content;">
+              <h3 class="panel-section-title">Government Schemes</h3>
+              <ul class="role-features" style="padding-left: 0;">
+                <li style="margin-bottom: 1rem;">
+                  <strong>🇮🇳 Khelo India Scholarship Scheme</strong>
+                  <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Provides ₹5 Lakhs annual support to grassroots athletes. Form open.</p>
+                </li>
+                <li style="margin-bottom: 1rem;">
+                  <strong>🎯 Target Olympic Podium Scheme (TOPS)</strong>
+                  <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Custom high-performance training support for elite contenders.</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             PANEL 6: CERTIFICATES CENTER
+             ========================================== -->
+        <div class="dash-panel" id="panel-certificates">
+          <div class="dash-header">
+            <div>
+              <h2 class="dash-title">Validated Certificates</h2>
+              <p class="dash-subtitle">View and download official government-certified participation files.</p>
+            </div>
+          </div>
+
+          <div class="glass-card" style="max-width: 900px;">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Competition Title</th>
+                    <th>Sports Discipline</th>
+                    <th>Issue Date</th>
+                    <th>QR Seal</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="certificates-table-body">
+                  <!-- Dynamic certificate listing -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ===== NOTIFICATION DRAWER ===== -->
+  <div class="notif-drawer" id="notif-drawer">
+    <div class="notif-drawer-header">
+      <h3 style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 700;">Alert Notifications</h3>
+      <button class="btn btn-ghost" id="notif-close-btn" style="padding: 0.25rem 0.5rem;">✕</button>
+    </div>
+    <div class="notif-list-body" id="notif-drawer-body">
+      <!-- Dynamic list -->
+    </div>
+  </div>
+
+  <!-- ===== COMPETITION REGISTRATION MODAL ===== -->
+  <div class="modal-overlay" id="reg-modal">
+    <div class="modal-content">
+      <span class="modal-close" id="reg-modal-close">✕</span>
+      <h3 class="panel-section-title" id="modal-comp-title">Register for Competition</h3>
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;" id="modal-comp-location">M. Chinnaswamy Stadium, Bangalore</p>
+      
+      <form id="modal-reg-form">
+        <input type="hidden" id="modal-comp-id" />
+        
+        <div class="form-group">
+          <label class="form-label" for="modal-reg-type">Register As</label>
+          <select id="modal-reg-type" class="form-control">
+            <option value="Player">Athlete / Player</option>
+            <option value="Observer">Observer</option>
+            <option value="Coach">Coach</option>
+            <option value="Volunteer">Volunteer</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="modal-id-proof">Aadhaar Card / Sports ID Proof Number</label>
+          <input type="text" id="modal-id-proof" class="form-control" placeholder="E.g., 1234 5678 9012" required />
+        </div>
+
+        <div class="form-group" style="margin-bottom: 2rem;">
+          <label class="form-label" style="display: flex; gap: 0.5rem; align-items: center; cursor: pointer;">
+            <input type="checkbox" required style="width: auto;" />
+            <span>I verify that my profile details are accurate and current.</span>
+          </label>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 1rem;">
+          <button type="button" class="btn btn-ghost" id="reg-modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit Application</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Scripts -->
+</body>
+</html>

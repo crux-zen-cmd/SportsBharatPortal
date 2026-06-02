@@ -16,14 +16,34 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Bind Theme Toggle
   setupThemeToggle();
 
-  // Scroll Event - Navbar Styling
+  // Scroll Event - Navbar Styling & Scrollspy
   const navbar = document.getElementById('main-navbar');
+  const sections = document.querySelectorAll('header[id], section[id]');
+  const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
+
   window.addEventListener('scroll', () => {
+    // Navbar styling
     if (window.scrollY > 50) {
       navbar.classList.add('scrolled');
     } else {
       navbar.classList.remove('scrolled');
     }
+
+    // Scrollspy logic
+    let current = '';
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      if (window.scrollY >= (sectionTop - 200)) { // 200px offset for the fixed navbar and visual buffer
+        current = section.getAttribute('id');
+      }
+    });
+
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === `#${current}`) {
+        link.classList.add('active');
+      }
+    });
   });
 
   // Mobile Menu Controls
@@ -179,7 +199,7 @@ function renderFilteredCompetitions(comps) {
           </div>
           <div class="comp-footer">
             ${priceText}
-            <a href="pages/auth/login.html" class="btn btn-primary">Register Now</a>
+            <a href="pages/auth/register.html" class="btn btn-primary">Register Now</a>
           </div>
         </div>
       </article>

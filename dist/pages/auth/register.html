@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    (function() {
+      const theme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <title>Register | National Sports Management Portal</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet" />
+
+  <!-- CSS -->
+  <style>
+    .auth-wrapper {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 3rem 1rem;
+      background: var(--bg-primary);
+      position: relative;
+    }
+    .auth-bg-art {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, rgba(0,0,0,0) 70%);
+      filter: blur(50px);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .auth-card {
+      max-width: 550px;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+    .auth-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .auth-logo {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .auth-title {
+      font-family: var(--font-display);
+      font-size: 2.25rem;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+    .auth-subtitle {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+    .auth-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+    .auth-footer a {
+      color: var(--primary-light);
+      font-weight: 600;
+    }
+    .auth-footer a:hover {
+      text-decoration: underline;
+    }
+    .role-badges-selection {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .role-sel-btn {
+      padding: 0.75rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all var(--transition-fast);
+    }
+    .role-sel-btn:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .role-sel-btn.active {
+      border-color: var(--accent);
+      background: rgba(249, 115, 22, 0.1);
+      color: var(--accent);
+    }
+    .back-home {
+      position: absolute;
+      top: 2rem;
+      left: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      z-index: 10;
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/firebase-config-FYaKDP7r.js"></script>
+  <script type="module" crossorigin src="/assets/auth-Ct-q7bEl.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/landing-B5wQRWK3.css">
+</head>
+<body>
+  <a href="../../index.html" class="back-home btn btn-ghost">← Back to Portal</a>
+
+  <div class="auth-wrapper">
+    <div class="auth-bg-art"></div>
+
+    <div class="auth-card glass-card">
+      <div class="auth-header">
+        <div class="auth-logo">🏆</div>
+        <h1 class="auth-title">Create SportsBharat Account</h1>
+        <p class="auth-subtitle">Join the Indian sports digitisation revolution</p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Select Your Account Type</label>
+        <div class="role-badges-selection">
+          <button type="button" class="role-sel-btn active" data-role="user">🏃 Athlete</button>
+          <button type="button" class="role-sel-btn" data-role="organizer">🎯 Organizer</button>
+          <button type="button" class="role-sel-btn" data-role="admin">🛡️ Administrator</button>
+        </div>
+      </div>
+
+      <form id="register-form">
+        <!-- Common Inputs -->
+        <div class="form-group">
+          <label class="form-label" for="reg-name">Full Name (As in ID proof)</label>
+          <input type="text" id="reg-name" class="form-control" placeholder="E.g., Rajesh Kumar" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-email">Email Address</label>
+          <input type="email" id="reg-email" class="form-control" placeholder="E.g., athlete@sports.gov.in" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-password">Password</label>
+          <input type="password" id="reg-password" class="form-control" placeholder="••••••••" required />
+        </div>
+
+        <!-- User Specific Inputs -->
+        <div id="role-fields-user">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="reg-age">Age</label>
+              <input type="number" id="reg-age" class="form-control" placeholder="Age" min="5" max="100" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg-gender">Gender</label>
+              <select id="reg-gender" class="form-control">
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="reg-city">City</label>
+              <input type="text" id="reg-city" class="form-control" placeholder="City" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg-state">State</label>
+              <input type="text" id="reg-state" class="form-control" placeholder="State" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Organizer Specific Inputs -->
+        <div id="role-fields-organizer" style="display: none;">
+          <div class="form-group">
+            <label class="form-label" for="reg-org">Organization Name</label>
+            <input type="text" id="reg-org" class="form-control" placeholder="E.g., Karnataka Athletics Association" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-org-city">City &amp; Headquarter</label>
+            <input type="text" id="reg-org-city" class="form-control" placeholder="City" />
+          </div>
+        </div>
+
+        <!-- Admin Specific Inputs -->
+        <div id="role-fields-admin" style="display: none;">
+          <div class="form-group">
+            <label class="form-label" for="reg-dept">Government Department</label>
+            <input type="text" id="reg-dept" class="form-control" placeholder="E.g., Ministry of Youth Affairs & Sports" />
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem; margin-top: 1rem;">
+          Register Account
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        Already have an account? <a href="login.html">Sign In here</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Scripts -->
+</body>
+</html>

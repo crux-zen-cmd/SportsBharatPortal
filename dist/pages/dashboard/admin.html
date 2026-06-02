@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    (function() {
+      const theme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <title>Admin Dashboard | SportsBharat</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet" />
+
+  <!-- CSS Styles -->
+
+  <!-- Chart.js for Admin Analytics vector boards -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module" crossorigin src="/assets/admin-CbO51xaH.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/firebase-config-FYaKDP7r.js">
+  <link rel="modulepreload" crossorigin href="/assets/auth-Ct-q7bEl.js">
+  <link rel="stylesheet" crossorigin href="/assets/landing-B5wQRWK3.css">
+  <link rel="stylesheet" crossorigin href="/assets/dashboards-JgFWNg5Z.css">
+</head>
+<body>
+  <!-- Page Loader -->
+  <div id="page-loader" class="page-loader">
+    <div class="loader-content">
+      <div class="loader-emblem">
+        <div class="loader-ring"></div>
+        <div class="loader-ring loader-ring-2"></div>
+      </div>
+      <p class="loader-text">Loading Admin Workspace</p>
+    </div>
+  </div>
+
+  <div class="dash-wrapper">
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <span>🛡️</span>
+          <div class="sidebar-logo-text">
+            SportsBharat
+            <small>National Admin</small>
+          </div>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li><div class="sidebar-link active" data-target="panel-analytics">📊 System Analytics</div></li>
+        <li><div class="sidebar-link" data-target="panel-users">👥 User Moderation</div></li>
+        <li><div class="sidebar-link" data-target="panel-organizers">🎯 Verify Organizers</div></li>
+        <li><div class="sidebar-link" data-target="panel-comps">🏆 Overrule Competitions</div></li>
+        <li><div class="sidebar-link" data-target="panel-security">🔒 Security &amp; Backups</div></li>
+      </ul>
+      <div class="sidebar-footer">
+        <button id="logout-btn" class="btn btn-ghost" style="width: 100%;">Sign Out</button>
+      </div>
+    </aside>
+
+    <!-- ===== MAIN WORKSPACE ===== -->
+    <main class="main-workspace">
+      <!-- ===== TOPBAR ===== -->
+      <header class="topbar">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <button class="sidebar-toggle-btn" id="sidebar-toggle">☰</button>
+          <div style="font-weight: 700; font-family: var(--font-display); font-size: 1.25rem;">Government of India</div>
+        </div>
+        <div class="topbar-actions">
+          <!-- Notification Bell -->
+          <div class="notif-bell" id="notif-toggle">
+            🔔 <span class="notif-count" id="notif-badge-count">0</span>
+          </div>
+
+          <!-- Theme Toggle -->
+          <button class="theme-toggle" id="theme-toggle" style="background: none;">
+            <span class="theme-icon">🌙</span>
+          </button>
+
+          <!-- Profile Badge -->
+          <div class="profile-pill">
+            <div class="profile-avatar" id="avatar-circle">A</div>
+            <div class="profile-meta-text">
+              <span class="profile-meta-name" id="admin-display-name">National Administrator</span>
+              <span class="profile-meta-role">National Admin</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- ===== CONTENT VIEWPORT ===== -->
+      <div class="dash-content">
+        
+        <!-- ==========================================
+             PANEL 1: SYSTEM ANALYTICS SUMMARY
+             ========================================== -->
+        <div class="dash-panel active" id="panel-analytics">
+          <div class="dash-header">
+            <div>
+              <h2 class="dash-title">National System Analytics</h2>
+              <p class="dash-subtitle">Oversight of athletes, state-wise popularities, and active matches.</p>
+            </div>
+            <!-- Global Export PDF / Excel -->
+            <button onclick="window.exportAdminCSV()" class="btn btn-primary">📂 Generate System Report (CSV)</button>
+          </div>
+
+          <div class="summary-grid">
+            <div class="glass-card summary-card">
+              <div class="summary-icon-box" style="background:rgba(59,130,246,0.1); color:var(--primary-light);">👥</div>
+              <div class="summary-info">
+                <span class="summary-label">Total Portal Users</span>
+                <span class="summary-val" id="stats-total-users">0</span>
+              </div>
+            </div>
+            <div class="glass-card summary-card">
+              <div class="summary-icon-box" style="background:rgba(249,115,22,0.1); color:var(--accent);">🏆</div>
+              <div class="summary-info">
+                <span class="summary-label">Active Competitions</span>
+                <span class="summary-val" id="stats-active-comps">0</span>
+              </div>
+            </div>
+            <div class="glass-card summary-card">
+              <div class="summary-icon-box" style="background:rgba(34,197,94,0.1); color:var(--success);">🎯</div>
+              <div class="summary-info">
+                <span class="summary-label">Verified Organizers</span>
+                <span class="summary-val" id="stats-verified-orgs">0</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Analytical Graphs Section -->
+          <div class="dashboard-grid" style="margin-bottom: 2rem;">
+            <div class="glass-card">
+              <h3 class="panel-section-title">📈 Monthly Athlete Registrations Growth</h3>
+              <div style="height: 300px; position: relative;">
+                <canvas id="adminMonthlyChart"></canvas>
+              </div>
+            </div>
+
+            <div class="glass-card">
+              <h3 class="panel-section-title">🔥 State-Wise Participation Heatmap</h3>
+              <div style="height: 300px; position: relative;">
+                <canvas id="adminStateChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-grid">
+            <div class="glass-card">
+              <h3 class="panel-section-title">🎖️ Top Sports Disciplines</h3>
+              <div style="height: 300px; position: relative;">
+                <canvas id="adminSportsChart"></canvas>
+              </div>
+            </div>
+
+            <div class="glass-card">
+              <h3 class="panel-section-title">🧠 AI Analytics Advisory</h3>
+              <div style="background: rgba(59,130,246,0.05); padding: 1.5rem; border-radius: var(--radius-md); border-left: 4px solid var(--primary-light);">
+                <p style="font-weight:700; color:var(--primary-light); margin-bottom:0.5rem;">🤖 Government AI Insights Summary</p>
+                <ul class="role-features" style="padding-left: 0; font-size:0.85rem; color:var(--text-secondary);">
+                  <li style="margin-bottom:0.5rem;">• <strong>Kabaddi Spark</strong>: Delhi region show high spikes in Under-19 athlete signups this month (+45%).</li>
+                  <li style="margin-bottom:0.5rem;">• <strong>Gender Parity</strong>: Karnataka sports associations leading female athletic participation ratio at 38%.</li>
+                  <li style="margin-bottom:0.5rem;">• <strong>Advisory Action</strong>: Allocate extra budget resources to Track &amp; Field facilities in Punjab region next quarter.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             PANEL 2: USER MODERATION SYSTEM
+             ========================================== -->
+        <div class="dash-panel" id="panel-users">
+          <div class="dash-header">
+            <div>
+              <h2 class="dash-title">User Moderation System</h2>
+              <p class="dash-subtitle">Revoke athlete access, modify permissions, and perform global interventions.</p>
+            </div>
+          </div>
+
+          <div class="glass-card">
+            <h3 class="panel-section-title">National Account Registry</h3>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Account Holder</th>
+                    <th>Email Address</th>
+                    <th>State</th>
+                    <th>Account Level</th>
+                    <th>Active Standing</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-users-table-body">
+                  <!-- Dynamic user list -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             PANEL 3: VERIFY ORGANIZERS REQUESTS
+             ========================================== -->
+        <div class="dash-panel" id="panel-organizers">
+          <div class="dash-header">
+            <div>
+              <h2 class="dash-title">Verify Sports Organizers</h2>
+              <p class="dash-subtitle">Approve credential licenses for regional athletic associations and clubs.</p>
+            </div>
+          </div>
+
+          <div class="glass-card">
+            <h3 class="panel-section-title">Organizer Licenses Awaiting Review</h3>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Official Representative</th>
+                    <th>Organization Title</th>
+                    <th>Email Address</th>
+                    <th>Verified Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-orgs-table-body">
+                  <!-- Dynamic verification records -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             PANEL 4: OVERRULE COMPETITIONS
+             ========================================== -->
+        <div class="dash-panel" id="panel-comps">
+          <div class="dash-header">
+            <div>
+              <h2 class="dash-title">Overrule Competitions</h2>
+              <p class="dash-subtitle">Monitor and overrule tournament entries to protect portal integrity.</p>
+            </div>
+          </div>
+
+          <div class="glass-card">
+            <h3 class="panel-section-title">Nationwide Active Tournament Logs</h3>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Tournament Title</th>
+                    <th>Sport Type</th>
+                    <th>Venue Location</th>
+                    <th>Published By</th>
+                    <th>Integrity Rank</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-comps-table-body">
+                  <!-- Dynamic tournament overrides -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             PANEL 5: SECURITY & BACKUPS
+             ========================================== -->
+        <div class="dash-panel" id="panel-security">
+          <div class="dash-header">
+            <div>
+              <h2 class="dash-title">Security &amp; Disaster Recovery</h2>
+              <p class="dash-subtitle">Disaster backups, security audit logs, fraud mitigations, and rate limiters tracking.</p>
+            </div>
+          </div>
+
+          <div class="dashboard-grid">
+            <!-- Left side security tools -->
+            <div style="display: flex; flex-direction: column; gap: 2rem;">
+              <div class="glass-card">
+                <h3 class="panel-section-title">💾 Disaster Backup &amp; Recovery</h3>
+                <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:1.5rem;">Generate cryptographic system-wide snapshot blocks or restore from validated checkpoints instantly.</p>
+                <div style="display:flex; gap:1rem;">
+                  <button onclick="window.triggerAdminBackup()" class="btn btn-primary">Create System Snapshot</button>
+                  <button onclick="window.triggerAdminRestore()" class="btn btn-ghost">Restore Checkpoint</button>
+                </div>
+              </div>
+
+              <!-- Fraud mitigating metrics -->
+              <div class="glass-card">
+                <h3 class="panel-section-title">🛡️ Fraud Mitigation Center</h3>
+                <div style="background:rgba(239,68,68,0.05); padding:1rem; border-radius:8px; border-left:3px solid var(--danger); margin-bottom:1rem;">
+                  <strong style="color:var(--danger); font-size:0.9rem;">🚫 Rate Limiting &amp; XSS Filter</strong>
+                  <p style="font-size:0.8rem; color:var(--text-secondary); margin-top:0.25rem;">Rate limit: 200 requests/min. SQL &amp; script injections filtered automatically. 0 warnings logged today.</p>
+                </div>
+                <div style="background:rgba(34,197,94,0.05); padding:1rem; border-radius:8px; border-left:3px solid var(--success);">
+                  <strong style="color:var(--success); font-size:0.9rem;">✓ Secure Authentication Logs</strong>
+                  <p style="font-size:0.8rem; color:var(--text-secondary); margin-top:0.25rem;">MFA tokens validated. Audit checksums synchronized successfully across active sessions.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right side logs history -->
+            <div class="glass-card">
+              <h3 class="panel-section-title">📋 Live Security Logs</h3>
+              <div style="background:#090d16; color:#22c55e; font-family:monospace; font-size:0.8rem; padding:1.5rem; border-radius:8px; height:320px; overflow-y:auto;" id="sec-logs-console">
+                <!-- dynamically ticking logs -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ===== NOTIFICATION DRAWER ===== -->
+  <div class="notif-drawer" id="notif-drawer">
+    <div class="notif-drawer-header">
+      <h3 style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 700;">Alert Notifications</h3>
+      <button class="btn btn-ghost" id="notif-close-btn" style="padding: 0.25rem 0.5rem;">✕</button>
+    </div>
+    <div class="notif-list-body" id="notif-drawer-body">
+      <!-- Dynamic lists -->
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Scripts -->
+</body>
+</html>
