@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="SportsBharat — India's unified national portal for sports events, athlete registration, live scores, and tournament management.">
+  <meta name="description"
+    content="SportsBharat — India's unified national portal for sports events, athlete registration, live scores, and tournament management.">
   <script>
-    (function() {
+    (function () {
       const theme = localStorage.getItem('theme') || 'light';
       document.documentElement.setAttribute('data-theme', theme);
     })();
@@ -13,10 +15,14 @@
   <title>SportsBharat — National Sports Portal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Rajdhani:wght@600;700&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="/css/main.css?v=3.0.0">
   <link rel="stylesheet" href="/css/landing-v4.css">
+  <link rel="stylesheet" href="/css/news-page.css">
 </head>
+
 <body>
 
   <!-- Page Loader -->
@@ -36,13 +42,28 @@
   <!-- Top Info Bar -->
   <div class="top-bar">
     <div class="container top-bar-inner">
-      <span class="top-bar-text">An Initiative under the National Digital Sports Mission</span>
+      <span class="top-bar-text" data-trn="top-bar-initiative">An Initiative under the National Digital Sports Mission</span>
       <div class="top-bar-links">
-        <a href="#">Accessibility</a>
+        <!-- Accessibility Font Sizer -->
+        <div class="accessibility-font-resizer" style="display: inline-flex; align-items: center; gap: 4px; margin-right: 8px;">
+          <button id="font-decrease" class="top-bar-theme-btn" style="font-size: 0.85rem; padding: 2px 6px;" aria-label="Decrease font size" title="Decrease Font Size">A-</button>
+          <button id="font-normal" class="top-bar-theme-btn active" style="font-size: 0.85rem; padding: 2px 6px; font-weight: bold;" aria-label="Reset font size to normal" title="Normal Font Size">A</button>
+          <button id="font-increase" class="top-bar-theme-btn" style="font-size: 0.85rem; padding: 2px 6px;" aria-label="Increase font size" title="Increase Font Size">A+</button>
+        </div>
         <span class="top-bar-sep">|</span>
-        <a href="#">Screen Reader</a>
+        <!-- Accessibility Contrast Toggle -->
+        <button id="contrast-toggle" class="top-bar-theme-btn" style="font-size: 0.85rem; padding: 0 4px; display: inline-flex; align-items: center; gap: 4px;" aria-label="Toggle high contrast mode" title="Toggle High Contrast Mode">
+          👁️ <span data-trn="high-contrast">High Contrast</span>
+        </button>
         <span class="top-bar-sep">|</span>
-        <button id="theme-toggle" class="top-bar-theme-btn" aria-label="Toggle Theme">
+        <!-- Language Selector -->
+        <div class="lang-selector" style="display: inline-flex; align-items: center; gap: 4px;">
+          <button id="lang-en" class="top-bar-theme-btn active" style="font-size: 0.85rem; font-weight: bold;" aria-label="Change language to English" title="English">EN</button>
+          <span class="top-bar-sep" style="font-size: 0.7rem; opacity: 0.5;">/</span>
+          <button id="lang-hi" class="top-bar-theme-btn" style="font-size: 0.85rem;" aria-label="भाषा बदलकर हिंदी करें" title="हिंदी">हिन्दी</button>
+        </div>
+        <span class="top-bar-sep">|</span>
+        <button id="theme-toggle" class="top-bar-theme-btn" aria-label="Toggle Theme" title="Toggle theme">
           <span class="theme-icon">🌙</span>
         </button>
       </div>
@@ -50,29 +71,31 @@
   </div>
 
   <!-- Main Navbar -->
-  <nav id="main-navbar" class="navbar">
+  <nav id="main-navbar" class="navbar" aria-label="Main Navigation">
     <div class="nav-container">
-      <a href="#home" class="nav-brand">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" alt="Ashoka Stambh" style="height: 40px; width: auto; object-fit: contain; margin-right: 4px;">
-        <svg class="brand-logo-svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
-          <circle cx="18" cy="18" r="17" stroke="#1e3a8a" stroke-width="2"/>
-          <text x="18" y="23" text-anchor="middle" fill="#1e3a8a" font-weight="800" font-size="14" font-family="Inter, sans-serif">SB</text>
+      <a href="#home" class="nav-brand" aria-label="SportsBharat Home">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" alt="Ashoka Stambh Emblem of India"
+          style="height: 40px; width: auto; object-fit: contain; margin-right: 4px;">
+        <svg class="brand-logo-svg" width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+          <circle cx="18" cy="18" r="17" stroke="#1e3a8a" stroke-width="2" />
+          <text x="18" y="23" text-anchor="middle" fill="#1e3a8a" font-weight="800" font-size="14"
+            font-family="Inter, sans-serif">SB</text>
         </svg>
         <div class="brand-text">
-          <span class="brand-title">SportsBharat</span>
-          <span class="brand-subtitle">National Portal</span>
+          <span class="brand-title" data-trn="brand-title">SportsBharat</span>
+          <span class="brand-subtitle" data-trn="brand-subtitle">National Portal</span>
         </div>
       </a>
-      <div class="nav-links">
-        <a href="#home" class="nav-link active">Home</a>
-        <a href="#sports" class="nav-link">Sports</a>
-        <a href="#competitions" class="nav-link">Competitions</a>
-        <a href="#news" class="nav-link">News & Updates</a>
-        <a href="#roles" class="nav-link">Ecosystem</a>
+      <div class="nav-links" role="navigation" aria-label="Desktop Navigation">
+        <a href="#home" class="nav-link active" data-trn="nav-home">Home</a>
+        <a href="#sports" class="nav-link" data-trn="nav-sports">Sports</a>
+        <a href="#competitions" class="nav-link" data-trn="nav-competitions">Competitions</a>
+        <a href="/pages/news.html" class="nav-link" data-trn="nav-news">News & Updates</a>
+        <a href="#roles" class="nav-link" data-trn="nav-ecosystem">Ecosystem</a>
       </div>
       <div class="nav-actions">
-        <a href="/pages/auth/login.html" class="btn btn-primary">Portal Login</a>
-        <button id="hamburger" class="hamburger" aria-label="Toggle Menu">
+        <a href="/pages/auth/login.html" class="btn btn-primary" data-trn="btn-login">Portal Login</a>
+        <button id="hamburger" class="hamburger" aria-label="Toggle Mobile Menu" aria-expanded="false">
           <span></span>
           <span></span>
           <span></span>
@@ -81,15 +104,28 @@
     </div>
   </nav>
 
-  <!-- Mobile Menu -->
-  <div id="mobile-menu" class="mobile-menu">
-    <a href="#home" class="mobile-nav-link">Home</a>
-    <a href="#sports" class="mobile-nav-link">Sports</a>
-    <a href="#competitions" class="mobile-nav-link">Competitions</a>
-    <a href="#news" class="mobile-nav-link">News & Updates</a>
-    <a href="#roles" class="mobile-nav-link">Ecosystem</a>
+  <!--Mobile Menu-->
+  <div id="mobile-menu" class="mobile-menu" aria-label="Mobile Navigation">
+    <a href="#home" class="mobile-nav-link" data-trn="nav-home">Home</a>
+    <a href="#sports" class="mobile-nav-link" data-trn="nav-sports">Sports</a>
+    <a href="#competitions" class="mobile-nav-link" data-trn="nav-competitions">Competitions</a>
+    <a href="/pages/news.html" class="mobile-nav-link" data-trn="nav-news">News & Updates</a>
+    <a href="#roles" class="mobile-nav-link" data-trn="nav-ecosystem">Ecosystem</a>
     <div class="mobile-menu-actions">
-      <a href="/pages/auth/login.html" class="btn btn-primary" style="width: 100%;">Portal Login</a>
+      <a href="/pages/auth/login.html" class="btn btn-primary" style="width: 100%;" data-trn="btn-login">Portal Login</a>
+    </div>
+  </div>
+
+  <!-- Live News Ticker -->
+  <div class="news-ticker-strip">
+    <div class="ticker-label">
+      <span class="live-dot"></span>
+      LIVE
+    </div>
+    <div class="ticker-wrapper">
+      <div id="landing-ticker-track" class="ticker-track">
+        <span class="ticker-placeholder">Loading latest sports headlines...</span>
+      </div>
     </div>
   </div>
 
@@ -97,14 +133,16 @@
   <header id="home" class="hero-section">
     <div class="container hero-container">
       <div class="hero-content">
-        <p class="hero-kicker">India's Unified Sports Platform</p>
-        <h1 class="hero-title">Empowering Indian Sports<br><span class="hero-title-accent">From Grassroots to Glory</span></h1>
-        <p class="hero-subtitle">
-          Discover events, register for tournaments, track live scores, and connect with the national sports ecosystem — all in one portal.
+        <p class="hero-kicker" data-trn="hero-kicker">India's Unified Sports Platform</p>
+        <h1 class="hero-title"><span data-trn="hero-title-1">Empowering Indian Sports</span><br><span class="hero-title-accent" data-trn="hero-title-2">From Grassroots to Glory</span></h1>
+        <p class="hero-subtitle" data-trn="hero-subtitle">
+          Discover events, register for tournaments, track live scores, and connect with the national sports ecosystem —
+          all in one portal.
         </p>
         <div class="hero-actions">
-          <a href="#competitions" class="btn btn-primary btn-lg">Explore Events <span class="btn-arrow">&rarr;</span></a>
-          <a href="/pages/auth/register.html" class="btn btn-ghost btn-lg">Register Now</a>
+          <a href="#competitions" class="btn btn-primary btn-lg" data-trn="hero-explore">Explore Events <span
+              class="btn-arrow">&rarr;</span></a>
+          <a href="/pages/auth/register.html" class="btn btn-ghost btn-lg" data-trn="hero-register">Register Now</a>
         </div>
       </div>
     </div>
@@ -113,76 +151,96 @@
       <div class="container hero-stats-inner">
         <div class="stat-item">
           <span class="stat-number" data-target="10000">0</span><span class="stat-suffix">+</span>
-          <span class="stat-label">Registered Athletes</span>
+          <span class="stat-label" data-trn="stat-athletes">Registered Athletes</span>
         </div>
         <div class="stat-sep"></div>
         <div class="stat-item">
           <span class="stat-number" data-target="500">0</span><span class="stat-suffix">+</span>
-          <span class="stat-label">Events Conducted</span>
-        </div>
+          <span class="stat-label" data-trn="stat-events">Events Conducted</span>
+        </div>  
         <div class="stat-sep"></div>
-        <div class="stat-item">
+        <div class="stat-item"> 
           <span class="stat-number" data-target="30">0</span><span class="stat-suffix">+</span>
-          <span class="stat-label">Sports Disciplines</span>
+          <span class="stat-label" data-trn="stat-disciplines">Sports Disciplines</span>
         </div>
         <div class="stat-sep"></div>
         <div class="stat-item">
           <span class="stat-number" data-target="28">0</span><span class="stat-suffix">+</span>
-          <span class="stat-label">States & UTs</span>
+          <span class="stat-label" data-trn="stat-states">States & UTs</span>
         </div>
       </div>
     </div>
   </header>
 
   <!-- Quick Access Strip -->
-  <section class="quick-access">
+  <section class="quick-access" aria-label="Quick Access Links">
     <div class="container quick-access-grid">
-      <a href="#competitions" class="qa-card">
+      <a href="#competitions" class="qa-card" aria-label="View live scores and real-time match updates">
         <div class="qa-icon">
-          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </svg>
         </div>
         <div class="qa-text">
-          <strong>Live Scores</strong>
-          <span>Real-time match updates</span>
+          <strong data-trn="qa-livescores">Live Scores</strong>
+          <span data-trn="qa-livescores-desc">Real-time match updates</span>
         </div>
       </a>
-      <a href="#competitions" class="qa-card">
+      <a href="#competitions" class="qa-card" aria-label="View schedules of upcoming tournaments">
         <div class="qa-icon">
-          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+          </svg>
         </div>
         <div class="qa-text">
-          <strong>Schedules</strong>
-          <span>Upcoming tournaments</span>
+          <strong data-trn="qa-schedules">Schedules</strong>
+          <span data-trn="qa-schedules-desc">Upcoming tournaments</span>
         </div>
       </a>
-      <a href="#roles" class="qa-card">
+      <a href="#roles" class="qa-card" aria-label="View national leaderboard rankings">
         <div class="qa-icon">
-          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20v-6M6 20V10M18 20V4"/></svg>
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 20v-6M6 20V10M18 20V4" />
+          </svg>
         </div>
         <div class="qa-text">
-          <strong>Rankings</strong>
-          <span>National leaderboard</span>
+          <strong data-trn="qa-rankings">Rankings</strong>
+          <span data-trn="qa-rankings-desc">National leaderboard</span>
         </div>
       </a>
-      <a href="#roles" class="qa-card">
+      <a href="#roles" class="qa-card" aria-label="Join grassroots scouting talent hunt">
         <div class="qa-icon">
-          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
         </div>
         <div class="qa-text">
-          <strong>Talent Hunt</strong>
-          <span>Grassroots scouting</span>
+          <strong data-trn="qa-talenthunt">Talent Hunt</strong>
+          <span data-trn="qa-talenthunt-desc">Grassroots scouting</span>
         </div>
       </a>
     </div>
   </section>
 
   <!-- Sports Section -->
-  <section id="sports" class="section">
+  <section id="sports" class="section" aria-labelledby="sports-heading">
     <div class="container">
       <div class="section-header">
-        <p class="section-eyebrow">Disciplines</p>
-        <h2 class="section-title">Popular Sports</h2>
-        <p class="section-desc">Explore active sporting disciplines across the nation. Select a sport to view related events and tournaments.</p>
+        <p class="section-eyebrow" id="sports-heading" data-trn="section-sports-eyebrow">Disciplines</p>
+        <h2 class="section-title" data-trn="section-sports-title">Popular Sports</h2>
+        <p class="section-desc" data-trn="section-sports-desc">Explore active sporting disciplines across the nation. Select a sport to view related
+          events and tournaments.</p>
       </div>
       <div id="sports-grid" class="sports-grid">
         <!-- Dynamically populated by landing.js -->
@@ -191,35 +249,39 @@
   </section>
 
   <!-- Competitions Section -->
-  <section id="competitions" class="section section-alt">
+  <section id="competitions" class="section section-alt" aria-labelledby="competitions-heading">
     <div class="container">
       <div class="section-header">
-        <p class="section-eyebrow">Live Events</p>
-        <h2 class="section-title">Active Tournaments</h2>
-        <p class="section-desc">Search, filter, and register for tournaments happening across India.</p>
+        <p class="section-eyebrow" id="competitions-heading" data-trn="section-competitions-eyebrow">Live Events</p>
+        <h2 class="section-title" data-trn="section-competitions-title">Active Tournaments</h2>
+        <p class="section-desc" data-trn="section-competitions-desc">Search, filter, and register for tournaments happening across India.</p>
       </div>
 
       <div class="filter-bar">
         <div class="search-box">
-          <svg class="search-icon-svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="comp-search" placeholder="Search competitions...">
+          <svg class="search-icon-svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="8" cy="8" r="7" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input type="text" id="comp-search" placeholder="Search competitions..." aria-label="Search competitions">
         </div>
         <div class="filter-options">
-          <select id="filter-sport" class="filter-select">
-            <option value="all">All Sports</option>
+          <select id="filter-sport" class="filter-select" aria-label="Filter by Sport">
+            <option value="all" data-trn="filter-all-sports">All Sports</option>
             <option value="cricket">Cricket</option>
             <option value="football">Football</option>
             <option value="kabaddi">Kabaddi</option>
             <option value="badminton">Badminton</option>
           </select>
-          <select id="filter-status" class="filter-select">
-            <option value="all">All Status</option>
-            <option value="live">Live Now</option>
-            <option value="upcoming">Upcoming</option>
-            <option value="completed">Completed</option>
+          <select id="filter-status" class="filter-select" aria-label="Filter by Status">
+            <option value="all" data-trn="filter-all-status">All Status</option>
+            <option value="live" data-trn="filter-live">Live Now</option>
+            <option value="upcoming" data-trn="filter-upcoming">Upcoming</option>
+            <option value="completed" data-trn="filter-completed">Completed</option>
           </select>
-          <select id="filter-state" class="filter-select">
-            <option value="all">All States</option>
+          <select id="filter-state" class="filter-select" aria-label="Filter by State">
+            <option value="all" data-trn="filter-all-states">All States</option>
             <option value="Delhi">Delhi</option>
             <option value="Maharashtra">Maharashtra</option>
             <option value="Karnataka">Karnataka</option>
@@ -258,172 +320,228 @@
   </section>
 
   <!-- News Section -->
-  <section id="news" class="section">
+  <section id="news" class="section" aria-labelledby="news-heading">
     <div class="container">
       <div class="section-header">
-        <p class="section-eyebrow">Highlights</p>
-        <h2 class="section-title">Latest Announcements</h2>
-        <p class="section-desc">Official updates, policy changes, and news from the national sports ecosystem.</p>
+        <p class="section-eyebrow" id="news-heading">
+          <span class="live-indicator" style="display:inline-flex;">
+            <span class="live-pulse"></span>
+            LIVE
+          </span>
+        </p>
+        <h2 class="section-title" data-trn="section-news-title">Live Sports News</h2>
+        <p class="section-desc" data-trn="section-news-desc">Real-time sports news from across India — Cricket, Olympics, Hockey, Badminton, and more.</p>
       </div>
-      <div class="news-carousel">
-        <div id="news-track" class="news-track">
-          <!-- Dynamically populated by landing.js -->
+
+      <!-- Live News Preview Cards -->
+      <div id="live-news-preview" class="live-news-preview-grid">
+        <!-- Skeleton loaders -->
+        <div class="live-preview-skeleton">
+          <div class="skeleton" style="height: 160px; border-radius: 8px 8px 0 0;"></div>
+          <div style="padding: 1rem;">
+            <div class="skeleton" style="width: 35%; height: 12px; margin-bottom: 8px;"></div>
+            <div class="skeleton" style="width: 90%; height: 18px; margin-bottom: 6px;"></div>
+            <div class="skeleton" style="width: 75%; height: 18px; margin-bottom: 10px;"></div>
+            <div class="skeleton" style="width: 50%; height: 12px;"></div>
+          </div>
         </div>
-        <div class="carousel-controls">
-          <button id="news-prev" class="carousel-btn" aria-label="Previous News">
-            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-          </button>
-          <div id="carousel-dots" class="carousel-dots"></div>
-          <button id="news-next" class="carousel-btn" aria-label="Next News">
-            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-          </button>
+        <div class="live-preview-skeleton">
+          <div class="skeleton" style="height: 160px; border-radius: 8px 8px 0 0;"></div>
+          <div style="padding: 1rem;">
+            <div class="skeleton" style="width: 35%; height: 12px; margin-bottom: 8px;"></div>
+            <div class="skeleton" style="width: 90%; height: 18px; margin-bottom: 6px;"></div>
+            <div class="skeleton" style="width: 75%; height: 18px; margin-bottom: 10px;"></div>
+            <div class="skeleton" style="width: 50%; height: 12px;"></div>
+          </div>
         </div>
+        <div class="live-preview-skeleton">
+          <div class="skeleton" style="height: 160px; border-radius: 8px 8px 0 0;"></div>
+          <div style="padding: 1rem;">
+            <div class="skeleton" style="width: 35%; height: 12px; margin-bottom: 8px;"></div>
+            <div class="skeleton" style="width: 90%; height: 18px; margin-bottom: 6px;"></div>
+            <div class="skeleton" style="width: 75%; height: 18px; margin-bottom: 10px;"></div>
+            <div class="skeleton" style="width: 50%; height: 12px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- View All CTA -->
+      <div style="text-align: center; margin-top: 2rem;">
+        <a href="/pages/news.html" class="btn btn-primary btn-lg" data-trn="btn-view-news">
+          View All Live News <span class="btn-arrow">&rarr;</span>
+        </a>
       </div>
     </div>
   </section>
 
   <!-- Ecosystem / Roles Section -->
-  <section id="roles" class="section section-alt">
+  <section id="roles" class="section section-alt" aria-labelledby="roles-heading">
     <div class="container">
       <div class="section-header">
-        <p class="section-eyebrow">Participate</p>
-        <h2 class="section-title">Join the Ecosystem</h2>
-        <p class="section-desc">Whether you are an aspiring athlete, an event organizer, or a national official — there's a place for you.</p>
+        <p class="section-eyebrow" id="roles-heading" data-trn="section-roles-eyebrow">Participate</p>
+        <h2 class="section-title" data-trn="section-roles-title">Join the Ecosystem</h2>
+        <p class="section-desc" data-trn="section-roles-desc">Whether you are an aspiring athlete, an event organizer, or a national official —
+          there's a place for you.</p>
       </div>
       <div class="roles-grid">
         <div class="role-card">
           <div class="role-icon-wrap">
-            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="16" cy="10" r="6"/><path d="M6 28c0-5.52 4.48-10 10-10s10 4.48 10 10"/></svg>
+            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <circle cx="16" cy="10" r="6" />
+              <path d="M6 28c0-5.52 4.48-10 10-10s10 4.48 10 10" />
+            </svg>
           </div>
-          <h3 class="role-title">Athletes</h3>
-          <p class="role-desc">Create your official national profile, register for tournaments, track stats, and get scouted by national coaches.</p>
+          <h3 class="role-title" data-trn="role-athlete-title">Athletes</h3>
+          <p class="role-desc" data-trn="role-athlete-desc">Create your official national profile, register for tournaments, track stats, and get
+            scouted by national coaches.</p>
           <ul class="role-features">
-            <li>Official Digital Profile</li>
-            <li>Direct Tournament Registration</li>
-            <li>Performance Tracking & Stats</li>
-            <li>National Scouting Eligibility</li>
+            <li data-trn="role-athlete-feat-1">Official Digital Profile</li>
+            <li data-trn="role-athlete-feat-2">Direct Tournament Registration</li>
+            <li data-trn="role-athlete-feat-3">Performance Tracking & Stats</li>
+            <li data-trn="role-athlete-feat-4">National Scouting Eligibility</li>
           </ul>
-          <a href="/pages/auth/login.html" class="btn btn-outline">Join as Athlete</a>
+          <a href="/pages/auth/login.html" class="btn btn-outline" data-trn="btn-join-athlete">Join as Athlete</a>
         </div>
         <div class="role-card role-card-featured">
           <span class="role-featured-tag">Featured</span>
           <div class="role-icon-wrap">
-            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="26" height="22" rx="3"/><line x1="10" y1="2" x2="10" y2="8"/><line x1="22" y1="2" x2="22" y2="8"/><line x1="3" y1="12" x2="29" y2="12"/></svg>
+            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <rect x="3" y="5" width="26" height="22" rx="3" />
+              <line x1="10" y1="2" x2="10" y2="8" />
+              <line x1="22" y1="2" x2="22" y2="8" />
+              <line x1="3" y1="12" x2="29" y2="12" />
+            </svg>
           </div>
-          <h3 class="role-title">Organizers</h3>
-          <p class="role-desc">Access tools to schedule matches, manage registrations, update live scores, and print digital certificates.</p>
+          <h3 class="role-title" data-trn="role-organizer-title">Organizers</h3>
+          <p class="role-desc" data-trn="role-organizer-desc">Access tools to schedule matches, manage registrations, update live scores, and print
+            digital certificates.</p>
           <ul class="role-features">
-            <li>Match Scheduler & Brackets</li>
-            <li>Live Score Console</li>
-            <li>Dynamic Certificate Generation</li>
-            <li>Registration Verification</li>
+            <li data-trn="role-organizer-feat-1">Match Scheduler & Brackets</li>
+            <li data-trn="role-organizer-feat-2">Live Score Console</li>
+            <li data-trn="role-organizer-feat-3">Dynamic Certificate Generation</li>
+            <li data-trn="role-organizer-feat-4">Registration Verification</li>
           </ul>
-          <a href="/pages/auth/login.html" class="btn btn-primary">Join as Organizer</a>
+          <a href="/pages/auth/login.html" class="btn btn-primary" data-trn="btn-join-organizer">Join as Organizer</a>
         </div>
         <div class="role-card">
           <div class="role-icon-wrap">
-            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22l-4 4V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H12z"/></svg>
+            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M12 22l-4 4V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H12z" />
+            </svg>
           </div>
-          <h3 class="role-title">Admins & Officials</h3>
-          <p class="role-desc">Approve structures, review registrations, manage portal compliance, and access the national talent database.</p>
+          <h3 class="role-title" data-trn="role-admin-title">Admins & Officials</h3>
+          <p class="role-desc" data-trn="role-admin-desc">Approve structures, review registrations, manage portal compliance, and access the
+            national talent database.</p>
           <ul class="role-features">
-            <li>Compliance & Verification Console</li>
-            <li>Live Event Supervision</li>
-            <li>National Talent Database</li>
-            <li>Portal Administration Tools</li>
+            <li data-trn="role-admin-feat-1">Compliance & Verification Console</li>
+            <li data-trn="role-admin-feat-2">Live Event Supervision</li>
+            <li data-trn="role-admin-feat-3">National Talent Database</li>
+            <li data-trn="role-admin-feat-4">Portal Administration Tools</li>
           </ul>
-          <a href="/pages/auth/login.html" class="btn btn-outline">Join as Admin</a>
+          <a href="/pages/auth/login.html" class="btn btn-outline" data-trn="btn-join-admin">Join as Admin</a>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Achievements Section -->
-  <section class="section">
+  <section class="section" aria-labelledby="achievements-heading">
     <div class="container">
       <div class="section-header">
-        <p class="section-eyebrow">Milestones</p>
-        <h2 class="section-title">Platform Impact</h2>
-        <p class="section-desc">Key metrics and milestones of the SportsBharat ecosystem.</p>
+        <p class="section-eyebrow" id="achievements-heading" data-trn="section-achievements-eyebrow">Milestones</p>
+        <h2 class="section-title" data-trn="section-achievements-title">Platform Impact</h2>
+        <p class="section-desc" data-trn="section-achievements-desc">Key metrics and milestones of the SportsBharat ecosystem.</p>
       </div>
       <div class="achievements-grid">
         <div class="achievement-card">
           <div class="ach-number">100K+</div>
-          <h3>Registrations</h3>
-          <p>Active participants across all states and union territories.</p>
+          <h3 data-trn="ach-registrations">Registrations</h3>
+          <p data-trn="ach-registrations-desc">Active participants across all states and union territories.</p>
         </div>
         <div class="achievement-card">
           <div class="ach-number">1,000+</div>
-          <h3>Verified Venues</h3>
-          <p>Registered and verified playing facilities nationwide.</p>
+          <h3 data-trn="ach-venues">Verified Venues</h3>
+          <p data-trn="ach-venues-desc">Registered and verified playing facilities nationwide.</p>
         </div>
         <div class="achievement-card">
           <div class="ach-number">50+</div>
-          <h3>Federation Partners</h3>
-          <p>Official partnerships with state and national federations.</p>
+          <h3 data-trn="ach-partners">Federation Partners</h3>
+          <p data-trn="ach-partners-desc">Official partnerships with state and national federations.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="main-footer">
+  <footer class="main-footer" aria-label="Footer Navigation">
     <div class="container footer-grid">
       <div class="footer-brand">
         <div class="footer-logo">
-          <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
-            <circle cx="18" cy="18" r="17" stroke="currentColor" stroke-width="2"/>
-            <text x="18" y="23" text-anchor="middle" fill="currentColor" font-weight="800" font-size="14" font-family="Inter, sans-serif">SB</text>
+          <svg width="32" height="32" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+            <circle cx="18" cy="18" r="17" stroke="currentColor" stroke-width="2" />
+            <text x="18" y="23" text-anchor="middle" fill="currentColor" font-weight="800" font-size="14"
+              font-family="Inter, sans-serif">SB</text>
           </svg>
           <strong>SportsBharat</strong>
         </div>
-        <p>National Sports Management & Competition Portal. An initiative under the National Digital Sports Mission, Ministry of Youth Affairs and Sports.</p>
+        <p data-trn="footer-desc">National Sports Management & Competition Portal. An initiative under the National Digital Sports Mission,
+          Ministry of Youth Affairs and Sports.</p>
         <div class="social-links">
           <a href="#" class="social-link" aria-label="Twitter">
-            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+            </svg>
           </a>
           <a href="#" class="social-link" aria-label="YouTube">
-            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+            </svg>
           </a>
           <a href="#" class="social-link" aria-label="Instagram">
-            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
+            </svg>
           </a>
         </div>
       </div>
       <div class="footer-links">
-        <h4>Ecosystem</h4>
+        <h4 data-trn="footer-ecosystem-title">Ecosystem</h4>
         <ul>
-          <li><a href="#sports">Sport Disciplines</a></li>
-          <li><a href="#competitions">Tournaments</a></li>
-          <li><a href="#news">Portal News</a></li>
-          <li><a href="/pages/auth/login.html">Login Portal</a></li>
+          <li><a href="#sports" data-trn="footer-sports">Sport Disciplines</a></li>
+          <li><a href="#competitions" data-trn="footer-tournaments">Tournaments</a></li>
+          <li><a href="/pages/news.html" data-trn="footer-news">Portal News</a></li>
+          <li><a href="/pages/auth/login.html" data-trn="footer-login">Login Portal</a></li>
         </ul>
       </div>
       <div class="footer-links">
-        <h4>Legal</h4>
+        <h4 data-trn="footer-legal-title">Legal</h4>
         <ul>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms of Service</a></li>
-          <li><a href="#">Compliance</a></li>
-          <li><a href="#">Disclaimer</a></li>
+          <li><a href="#" data-trn="footer-privacy">Privacy Policy</a></li>
+          <li><a href="#" data-trn="footer-tos">Terms of Service</a></li>
+          <li><a href="#" data-trn="footer-compliance">Compliance</a></li>
+          <li><a href="#" data-trn="footer-disclaimer">Disclaimer</a></li>
         </ul>
       </div>
       <div class="footer-links">
-        <h4>Support</h4>
+        <h4 data-trn="footer-support-title">Support</h4>
         <ul>
-          <li><a href="#">Help Center</a></li>
-          <li><a href="#">Contact Us</a></li>
-          <li><a href="#">Feedback</a></li>
-          <li><a href="#">Report Bug</a></li>
+          <li><a href="#" data-trn="footer-help">Help Center</a></li>
+          <li><a href="#" data-trn="footer-contact">Contact Us</a></li>
+          <li><a href="#" data-trn="footer-feedback">Feedback</a></li>
+          <li><a href="#" data-trn="footer-bug">Report Bug</a></li>
         </ul>
       </div>
     </div>
     <div class="container footer-bottom">
-      <p>&copy; 2026 SportsBharat Portal. Developed under the National Digital Sports Initiative.</p>
+      <p data-trn="footer-copyright">&copy; 2026 SportsBharat Portal. Developed under the National Digital Sports Initiative.</p>
     </div>
   </footer>
 
   <!-- Scripts -->
   <script type="module" src="/js/landing.js"></script>
 </body>
+
 </html>

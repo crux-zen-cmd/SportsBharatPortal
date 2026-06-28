@@ -253,7 +253,7 @@ function renderBadgeShowcase() {
   const container = document.getElementById('badge-showcase');
   if (!container) return;
 
-  const badges = currentUser.badges || ["🏆 Portal Rookie"];
+  const badges = currentUser.badges || ["🏛️ Portal Rookie"];
   container.innerHTML = badges.map(badge => `
     <div class="badge-achievement-card">
       <div class="badge-ach-icon">${badge.split(' ')[0]}</div>

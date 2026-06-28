@@ -1,4 +1,4 @@
-# 🏆 National Sports Management & Competition Portal — SportsBharat
+# 🏛️ National Sports Management & Competition Portal — SportsBharat
 
 SportsBharat is a premium, government-grade responsive web portal built for the **Ministry of Youth Affairs & Sports (Government of India)** to digitize athletic championships, verify regional organizers, track attendance via cryptographic secure scanners, and issue validated digital merit credentials.
 
@@ -149,4 +149,4 @@ firebase init hosting
 firebase deploy --only hosting
 ```
 
-Your government portal is now online, fully functional, and scalable! 🏆
+Your government portal is now online, fully functional, and scalable! 🏛️

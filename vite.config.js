@@ -13,7 +13,8 @@ export default defineConfig({
         register: resolve(__dirname, 'pages/auth/register.html'),
         admin: resolve(__dirname, 'pages/dashboard/admin.html'),
         organizer: resolve(__dirname, 'pages/dashboard/organizer.html'),
-        user: resolve(__dirname, 'pages/dashboard/user.html')
+        user: resolve(__dirname, 'pages/dashboard/user.html'),
+        news: resolve(__dirname, 'pages/news.html')
       }
     }
   }

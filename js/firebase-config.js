@@ -5,13 +5,12 @@
 // Standard Web App Firebase Config Template
 // Replace these with actual environment keys when deploying.
 const firebaseConfig = {
-  apiKey: "AIzaSyCLxgT78u7dmZa6NYNXaEWBZBxsmPOsAOM",
+    apiKey: "AIzaSyCLxgT78u7dmZa6NYNXaEWBZBxsmPOsAOM",
   authDomain: "sportsbharat-portal-yash.firebaseapp.com",
   projectId: "sportsbharat-portal-yash",
   storageBucket: "sportsbharat-portal-yash.firebasestorage.app",
   messagingSenderId: "634844615752",
-  appId: "1:634844615752:web:c435fb81bcc75377d0747d",
-  measurementId: "G-G5D1HG78N4"
+  appId: "1:634844615752:web:c435fb81bcc75377d0747d"
 };
 
 // Check if we are running in real Firebase environment or using the simulator
@@ -52,7 +51,7 @@ class SimulatedFirestore {
           profilePhoto: "",
           bio: "Grassroots sprinter targeting regional meets.",
           contactInfo: "+91 9876543210",
-          badges: ["🏆 First Registration", "🏅 Grassroots Contender"],
+          badges: ["🏛️ First Registration", "🏅 Grassroots Contender"],
           bookmarkIds: ["comp_kabaddi_2026"],
           certificates: []
         }
@@ -310,7 +309,7 @@ class SimulatedAuth {
     let foundUser = null;
     for (let role of ['users', 'organizers', 'admins']) {
       const collection = data[role] || {};
-      const match = Object.values(collection).find(u => u.email === email);
+      const match = Object.values(collection).find(u => u.email.toLowerCase() === email.toLowerCase());
       if (match) {
         foundUser = match;
         break;
@@ -318,6 +317,12 @@ class SimulatedAuth {
     }
 
     if (foundUser) {
+      // If the user has a password set (either registered or demo), check it
+      const expectedPassword = foundUser.password || 'sports123'; // Default password for pre-seeded demo accounts
+      if (expectedPassword !== password) {
+        throw new Error("Authentication failed: Incorrect password.");
+      }
+
       this.currentUser = foundUser;
       localStorage.setItem(this.currentUserKey, JSON.stringify(foundUser));
       this.notifyListeners();
@@ -329,11 +334,23 @@ class SimulatedAuth {
 
   async createUserWithEmailAndPassword(email, password, role, additionalData = {}) {
     const firestore = new SimulatedFirestore();
+    const data = firestore.getData();
+
+    // Check if user already exists
+    for (let r of ['users', 'organizers', 'admins']) {
+      const collection = data[r] || {};
+      const match = Object.values(collection).find(u => u.email.toLowerCase() === email.toLowerCase());
+      if (match) {
+        throw new Error("Registration failed: Email is already registered.");
+      }
+    }
+
     const uid = 'usr_' + Math.random().toString(36).substr(2, 9);
     
     const newUser = {
       uid,
       email,
+      password, // Store password for authentic login
       role,
       fullName: additionalData.fullName || "New User",
       createdAt: new Date().toISOString(),

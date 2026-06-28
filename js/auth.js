@@ -72,36 +72,148 @@ function setInputsRequiredState(containerId, isRequired) {
 }
 
 /* ==========================================================================
-   LOGIN SUBMIT EVENT
+   AUTHENTICATION & 2SV (TWO-STEP VERIFICATION)
    ========================================================================== */
+let pendingUser = null;
+let currentOtp = '';
+
 async function handleLogin(e) {
   e.preventDefault();
-  const email = document.getElementById('login-email').value;
+  const email = document.getElementById('login-email').value.trim();
   const pass = document.getElementById('login-password').value;
+
+  // Basic validation
+  if (!validateEmail(email)) {
+    showToast('Please enter a valid authentic email address.', 'danger');
+    return;
+  }
+
+  if (pass.length < 6) {
+    showToast('Password must be at least 6 characters.', 'danger');
+    return;
+  }
 
   try {
     const res = await SportsPortal.auth.signInWithEmailAndPassword(email, pass);
-    const user = res.user;
+    pendingUser = res.user;
 
-    showToast(`Authentication Successful. Welcome back, ${user.fullName}!`, 'success');
+    // Generate 6-digit OTP
+    currentOtp = Math.floor(100000 + Math.random() * 900000).toString();
 
-    // Logging analytics event
-    SportsPortal.analytics.logEvent('login', { uid: user.uid, role: user.role });
-
-    // Redirect depending on credentials
-    setTimeout(() => {
-      if (user.role === 'admin') {
-        window.location.href = '../dashboard/admin.html';
-      } else if (user.role === 'organizer') {
-        window.location.href = '../dashboard/organizer.html';
-      } else {
-        window.location.href = '../dashboard/user.html';
-      }
-    }, 1500);
+    // Show 2SV Modal
+    show2SVModal(email);
 
   } catch (err) {
     showToast(err.message, 'danger');
   }
+}
+
+function validateEmail(email) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
+}
+
+function show2SVModal(email) {
+  const modal = document.getElementById('tsv-modal');
+  if (!modal) return;
+
+  modal.style.display = 'flex';
+  
+  // Clear previous inputs
+  const inputs = document.querySelectorAll('.tsv-otp-input');
+  inputs.forEach(input => {
+    input.value = '';
+  });
+  inputs[0].focus();
+
+  // Show simulated verification code Toast
+  showToast(`[2SV Security] Verification code sent to ${email}. Code: ${currentOtp}`, 'warning');
+
+  // Setup input keypress handlers
+  setupOtpInputHandlers();
+
+  // Bind verify button
+  const verifyBtn = document.getElementById('verify-tsv-btn');
+  verifyBtn.onclick = verifyOtp;
+
+  // Bind cancel button
+  const cancelBtn = document.getElementById('cancel-tsv-btn');
+  cancelBtn.onclick = () => {
+    modal.style.display = 'none';
+    pendingUser = null;
+    currentOtp = '';
+    showToast('Sign in cancelled.', 'warning');
+  };
+
+  // Bind resend button
+  const resendBtn = document.getElementById('resend-tsv-btn');
+  resendBtn.onclick = () => {
+    currentOtp = Math.floor(100000 + Math.random() * 900000).toString();
+    inputs.forEach(input => input.value = '');
+    inputs[0].focus();
+    showToast(`[2SV Security] New verification code sent. Code: ${currentOtp}`, 'warning');
+  };
+}
+
+function setupOtpInputHandlers() {
+  const inputs = document.querySelectorAll('.tsv-otp-input');
+  
+  inputs.forEach((input, index) => {
+    input.oninput = (e) => {
+      const val = e.target.value;
+      if (val.length === 1 && index < inputs.length - 1) {
+        inputs[index + 1].focus();
+      }
+    };
+
+    input.onkeydown = (e) => {
+      if (e.key === 'Backspace' && !input.value && index > 0) {
+        inputs[index - 1].focus();
+      }
+    };
+  });
+}
+
+async function verifyOtp() {
+  const inputs = document.querySelectorAll('.tsv-otp-input');
+  let enteredOtp = '';
+  inputs.forEach(input => {
+    enteredOtp += input.value;
+  });
+
+  if (enteredOtp.length < 6) {
+    showToast('Please enter the complete 6-digit verification code.', 'danger');
+    return;
+  }
+
+  if (enteredOtp !== currentOtp) {
+    showToast('Invalid verification code. Please try again.', 'danger');
+    // Clear inputs
+    inputs.forEach(input => input.value = '');
+    inputs[0].focus();
+    return;
+  }
+
+  // Verification successful
+  const modal = document.getElementById('tsv-modal');
+  if (modal) modal.style.display = 'none';
+
+  showToast(`Verification Successful. Welcome back, ${pendingUser.fullName}!`, 'success');
+
+  // Logging analytics event
+  SportsPortal.analytics.logEvent('login', { uid: pendingUser.uid, role: pendingUser.role });
+
+  // Redirect depending on credentials
+  const user = pendingUser;
+  setTimeout(() => {
+    if (user.role === 'admin') {
+      window.location.href = '../dashboard/admin.html';
+    } else if (user.role === 'organizer') {
+      window.location.href = '../dashboard/organizer.html';
+    } else {
+      window.location.href = '../dashboard/user.html';
+    }
+  }, 1500);
 }
 
 /* ==========================================================================
@@ -126,7 +238,7 @@ async function handleRegistration(e) {
     additionalData.profilePhoto = "";
     additionalData.bio = "";
     additionalData.contactInfo = "";
-    additionalData.badges = ["🏆 Portal Rookie"];
+    additionalData.badges = ["🏛️ Portal Rookie"];
     additionalData.certificates = [];
     additionalData.bookmarkIds = [];
   } else if (selectedRole === 'organizer') {

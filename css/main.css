@@ -82,6 +82,134 @@
   padding: 0;
 }
 
+.skeleton-title {
+  height: 24px;
+  margin-bottom: 12px;
+  width: 60%;
+}
+
+/* ==========================================================================
+   ACCESSIBILITY & HIGH CONTRAST (GIGW COMPLIANCE)
+   ========================================================================== */
+.top-bar-theme-btn.active, .lang-btn.active {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  border-radius: 4px;
+}
+
+/* High Contrast Mode */
+[data-contrast="high"] {
+  --bg-primary: #000000 !important;
+  --bg-secondary: #000000 !important;
+  --bg-tertiary: #000000 !important;
+  --text-primary: #ffffff !important;
+  --text-secondary: #ffff00 !important; /* Yellow */
+  --text-muted: #ffffff !important;
+  --primary: #ffff00 !important;
+  --primary-light: #ffff00 !important;
+  --primary-dark: #ffffff !important;
+  --accent: #ffff00 !important;
+  --glass-bg: #000000 !important;
+  --glass-border: #ffffff !important;
+  --glass-shadow: none !important;
+  --glass-blur: 0px !important;
+}
+
+[data-contrast="high"] body {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+[data-contrast="high"] * {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+[data-contrast="high"] a,
+[data-contrast="high"] button,
+[data-contrast="high"] select,
+[data-contrast="high"] input,
+[data-contrast="high"] strong,
+[data-contrast="high"] h1,
+[data-contrast="high"] h2,
+[data-contrast="high"] h3,
+[data-contrast="high"] h4,
+[data-contrast="high"] h5,
+[data-contrast="high"] h6,
+[data-contrast="high"] .brand-title,
+[data-contrast="high"] .hero-title-accent,
+[data-contrast="high"] .comp-title,
+[data-contrast="high"] .comp-price {
+  color: #ffff00 !important; /* Bright Yellow for interactive/important text */
+}
+
+[data-contrast="high"] a:hover,
+[data-contrast="high"] button:hover {
+  text-decoration: underline !important;
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+}
+
+[data-contrast="high"] a:hover *,
+[data-contrast="high"] button:hover * {
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+}
+
+[data-contrast="high"] .btn-primary,
+[data-contrast="high"] .btn-outline,
+[data-contrast="high"] .btn-ghost {
+  border: 2px solid #ffff00 !important;
+  background: #000000 !important;
+  color: #ffff00 !important;
+}
+
+[data-contrast="high"] .btn-primary:hover,
+[data-contrast="high"] .btn-outline:hover,
+[data-contrast="high"] .btn-ghost:hover {
+  background: #ffff00 !important;
+  color: #000000 !important;
+}
+
+[data-contrast="high"] input,
+[data-contrast="high"] select {
+  border: 2px solid #ffffff !important;
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+[data-contrast="high"] input:focus,
+[data-contrast="high"] select:focus,
+[data-contrast="high"] a:focus,
+[data-contrast="high"] button:focus {
+  outline: 3px solid #ffff00 !important;
+  outline-offset: 2px !important;
+}
+
+[data-contrast="high"] .top-bar {
+  background-color: #000000 !important;
+  border-bottom: 2px solid #ffffff !important;
+}
+
+[data-contrast="high"] .navbar {
+  background-color: #000000 !important;
+  border-bottom: 2px solid #ffffff !important;
+}
+
+[data-contrast="high"] .navbar.scrolled {
+  border-bottom: 3px solid #ffff00 !important;
+}
+
+/* Ensure images are readable or add a border */
+[data-contrast="high"] img {
+  filter: grayscale(100%) contrast(120%) !important;
+  border: 1px solid #ffffff !important;
+}
+
 html {
   scroll-behavior: smooth;
   font-size: 16px;
