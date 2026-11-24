@@ -12,6 +12,7 @@
       document.documentElement.setAttribute('data-theme', theme);
     })();
   </script>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <title>Live Sports News — SportsBharat</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,15 +24,16 @@
 </head>
 
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <!-- Top Info Bar -->
   <div class="top-bar">
     <div class="container top-bar-inner">
       <span class="top-bar-text">An Initiative under the National Digital Sports Mission</span>
       <div class="top-bar-links">
-        <a href="#">Accessibility</a>
+        <a href="/pages/legal/accessibility.html">Accessibility</a>
         <span class="top-bar-sep">|</span>
-        <a href="#">Screen Reader</a>
+        <a href="/pages/legal/accessibility.html">Screen Reader</a>
         <span class="top-bar-sep">|</span>
         <button id="theme-toggle" class="top-bar-theme-btn" aria-label="Toggle Theme">
           <span class="theme-icon">🌙</span>
@@ -61,6 +63,7 @@
         <a href="/#sports" class="nav-link">Sports</a>
         <a href="/#competitions" class="nav-link">Competitions</a>
         <a href="/pages/news.html" class="nav-link active">News & Updates</a>
+        <a href="/pages/infrastructure.html" class="nav-link">Infrastructure</a>
         <a href="/#roles" class="nav-link">Ecosystem</a>
       </div>
       <div class="nav-actions">
@@ -80,6 +83,7 @@
     <a href="/#sports" class="mobile-nav-link">Sports</a>
     <a href="/#competitions" class="mobile-nav-link">Competitions</a>
     <a href="/pages/news.html" class="mobile-nav-link">News & Updates</a>
+    <a href="/pages/infrastructure.html" class="mobile-nav-link">Infrastructure</a>
     <a href="/#roles" class="mobile-nav-link">Ecosystem</a>
     <div class="mobile-menu-actions">
       <a href="/pages/auth/login.html" class="btn btn-primary" style="width: 100%;">Portal Login</a>
@@ -158,7 +162,7 @@
   </section>
 
   <!-- Main News Content -->
-  <main class="news-main">
+  <main id="main-content" class="news-main">
     <div class="container">
       <div class="news-layout">
         <!-- Primary News Column -->
@@ -367,19 +371,19 @@
       <div class="footer-links">
         <h4>Legal</h4>
         <ul>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms of Service</a></li>
-          <li><a href="#">Compliance</a></li>
-          <li><a href="#">Disclaimer</a></li>
+          <li><a href="/pages/legal/privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="/pages/legal/terms.html">Terms of Service</a></li>
+          <li><a href="/pages/legal/accessibility.html">Accessibility</a></li>
+          <li><a href="/pages/legal/disclaimer.html">Disclaimer</a></li>
         </ul>
       </div>
       <div class="footer-links">
         <h4>Support</h4>
         <ul>
-          <li><a href="#">Help Center</a></li>
-          <li><a href="#">Contact Us</a></li>
-          <li><a href="#">Feedback</a></li>
-          <li><a href="#">Report Bug</a></li>
+          <li><a href="/pages/legal/accessibility.html">Accessibility</a></li>
+          <li><a href="/pages/contact.html">Contact Us</a></li>
+          <li><a href="/pages/contact.html">Feedback</a></li>
+          <li><a href="/pages/contact.html">Report Bug</a></li>
         </ul>
       </div>
     </div>
@@ -388,6 +392,7 @@
     </div>
   </footer>
 
+  <script src="/js/image-fallback.js"></script>
   <script type="module" src="/js/news-page.js"></script>
 </body>
 

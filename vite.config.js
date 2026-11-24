@@ -14,7 +14,8 @@ export default defineConfig({
         admin: resolve(__dirname, 'pages/dashboard/admin.html'),
         organizer: resolve(__dirname, 'pages/dashboard/organizer.html'),
         user: resolve(__dirname, 'pages/dashboard/user.html'),
-        news: resolve(__dirname, 'pages/news.html')
+        news: resolve(__dirname, 'pages/news.html'),
+        infrastructure: resolve(__dirname, 'pages/infrastructure.html')
       }
     }
   }

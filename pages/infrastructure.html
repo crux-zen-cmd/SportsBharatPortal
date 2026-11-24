@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Locate verified sports stadiums, academies, and playfields across India. Filter by sport, facility type, and state. Book sessions with verified coaches." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <title>National Sports Infrastructure Directory | SportsBharat</title>
+
+  <!-- Early theme injection — prevents flash of wrong theme -->
+  <script>
+    (function () {
+      const t = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="/css/landing.css" />
+  <link rel="stylesheet" href="/css/infrastructure.css" />
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        crossorigin="anonymous" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <!-- ===== TOP INFO BAR ===== -->
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <span class="top-bar-text">An Initiative under the National Digital Sports Mission</span>
+      <div class="top-bar-links">
+        <a href="/pages/legal/accessibility.html">Accessibility</a>
+        <span class="top-bar-sep">|</span>
+        <a href="/pages/legal/accessibility.html">Screen Reader</a>
+        <span class="top-bar-sep">|</span>
+        <button id="theme-toggle" class="top-bar-theme-btn" aria-label="Toggle Theme">
+          <span class="theme-icon">🌙</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav id="main-navbar" class="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-brand">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg"
+             alt="Ashoka Stambh" style="height:40px;width:auto;object-fit:contain;margin-right:4px;" />
+        <svg class="brand-logo-svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
+          <circle cx="18" cy="18" r="17" stroke="#1e3a8a" stroke-width="2" />
+          <text x="18" y="23" text-anchor="middle" fill="#1e3a8a" font-weight="800"
+                font-size="14" font-family="Inter, sans-serif">SB</text>
+        </svg>
+        <div class="brand-text">
+          <span class="brand-title">SportsBharat</span>
+          <span class="brand-subtitle">National Portal</span>
+        </div>
+      </a>
+
+      <div class="nav-links">
+        <a href="/"                           class="nav-link">Home</a>
+        <a href="/#sports"                    class="nav-link">Sports</a>
+        <a href="/#competitions"              class="nav-link">Competitions</a>
+        <a href="/pages/news.html"            class="nav-link">News &amp; Updates</a>
+        <a href="/pages/infrastructure.html"  class="nav-link active">Infrastructure</a>
+        <a href="/#roles"                     class="nav-link">Ecosystem</a>
+      </div>
+
+      <div class="nav-actions">
+        <a href="/pages/auth/login.html" class="btn btn-primary">Portal Login</a>
+        <button id="hamburger" class="hamburger" aria-label="Toggle Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== MOBILE MENU ===== -->
+  <div id="mobile-menu" class="mobile-menu">
+    <a href="/"                          class="mobile-nav-link">Home</a>
+    <a href="/#sports"                   class="mobile-nav-link">Sports</a>
+    <a href="/#competitions"             class="mobile-nav-link">Competitions</a>
+    <a href="/pages/news.html"           class="mobile-nav-link">News &amp; Updates</a>
+    <a href="/pages/infrastructure.html" class="mobile-nav-link">Infrastructure</a>
+    <a href="/#roles"                    class="mobile-nav-link">Ecosystem</a>
+    <div class="mobile-menu-actions">
+      <a href="/pages/auth/login.html" class="btn btn-primary" style="width:100%;">Portal Login</a>
+    </div>
+  </div>
+
+  <!-- ===== HERO ===== -->
+  <div class="infra-hero">
+    <div class="container infra-hero-inner">
+      <p class="infra-hero-kicker">🏛️ Ministry of Youth Affairs &amp; Sports</p>
+      <h1 class="infra-hero-title">National Sports <span>Infrastructure</span> Directory</h1>
+      <p class="infra-hero-desc">
+        Locate verified stadiums, academies, and playfields across every Indian state.
+        Filter by sport, facility type, and region — then book a session with a verified coach.
+      </p>
+      <div class="infra-stats-row">
+        <div class="infra-stat"><strong>10</strong><span>Facilities Listed</span></div>
+        <div class="infra-stat"><strong>9</strong><span>States Covered</span></div>
+        <div class="infra-stat"><strong>8</strong><span>Sports Disciplines</span></div>
+        <div class="infra-stat"><strong>24+</strong><span>Verified Coaches</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main id="main-content" class="container infra-page" style="padding-top:0;">
+    <div class="infra-shell">
+
+      <!-- ===== SIDEBAR ===== -->
+      <aside class="infra-sidebar" aria-label="Facility filters">
+
+        <p class="sidebar-section-title">Filter Facilities</p>
+
+        <div class="filter-group">
+          <div>
+            <label class="filter-label" for="filter-sport">Sport</label>
+            <select id="filter-sport" class="filter-select">
+              <option value="">All Sports</option>
+            </select>
+          </div>
+          <div>
+            <label class="filter-label" for="filter-type">Facility Type</label>
+            <select id="filter-type" class="filter-select">
+              <option value="">All Types</option>
+              <option value="Stadium">🏟️ Stadium</option>
+              <option value="Academy">🎓 Academy</option>
+              <option value="Playfield">⛳ Playfield</option>
+            </select>
+          </div>
+          <div>
+            <label class="filter-label" for="filter-state">State</label>
+            <select id="filter-state" class="filter-select">
+              <option value="">All States</option>
+            </select>
+          </div>
+        </div>
+
+        <button id="filter-reset" class="filter-reset-btn" type="button">
+          ↺ Reset Filters
+        </button>
+
+        <hr class="sidebar-divider" />
+
+        <p class="sidebar-section-title">Results</p>
+        <p id="facility-count" class="facility-count"></p>
+        <div id="facility-list" class="facility-list" role="list"></div>
+      </aside>
+
+      <!-- ===== MAP ===== -->
+      <section class="infra-map-card" aria-label="Sports facilities map">
+        <div class="map-toolbar">
+          <span class="map-title">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            Interactive Map — Click a marker for details
+          </span>
+          <div class="map-legend" aria-label="Map legend">
+            <span class="legend-item"><span class="legend-dot Stadium"></span> Stadium</span>
+            <span class="legend-item"><span class="legend-dot Academy"></span> Academy</span>
+            <span class="legend-item"><span class="legend-dot Playfield"></span> Playfield</span>
+          </div>
+        </div>
+        <div id="infra-map" role="application" aria-label="India sports facilities map"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="main-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
+            <circle cx="18" cy="18" r="17" stroke="currentColor" stroke-width="2" />
+            <text x="18" y="23" text-anchor="middle" fill="currentColor" font-weight="800"
+                  font-size="14" font-family="Inter, sans-serif">SB</text>
+          </svg>
+          <strong>SportsBharat</strong>
+        </div>
+        <p>National Sports Management &amp; Competition Portal. An initiative under the National Digital Sports Mission, Ministry of Youth Affairs and Sports.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Ecosystem</h4>
+        <ul>
+          <li><a href="/#sports">Sport Disciplines</a></li>
+          <li><a href="/#competitions">Tournaments</a></li>
+          <li><a href="/pages/news.html">Live News</a></li>
+          <li><a href="/pages/infrastructure.html">Infrastructure</a></li>
+          <li><a href="/pages/auth/login.html">Login Portal</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/pages/legal/privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="/pages/legal/terms.html">Terms of Service</a></li>
+          <li><a href="/pages/legal/accessibility.html">Accessibility</a></li>
+          <li><a href="/pages/legal/disclaimer.html">Disclaimer</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="/pages/legal/accessibility.html">Accessibility</a></li>
+          <li><a href="/pages/contact.html">Contact Us</a></li>
+          <li><a href="/pages/contact.html">Feedback</a></li>
+          <li><a href="/pages/contact.html">Report Bug</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>&copy; 2026 SportsBharat Portal. Developed under the National Digital Sports Initiative.</p>
+    </div>
+  </footer>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          crossorigin="anonymous"></script>
+
+  <!-- Page controller -->
+  <script src="/js/infrastructure.js"></script>
+</body>
+</html>

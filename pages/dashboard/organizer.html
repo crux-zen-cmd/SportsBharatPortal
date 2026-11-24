@@ -22,6 +22,10 @@
 
   <!-- Chart.js for premium vector analytics -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- PDF generation (tournament certificates) -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 </head>
 <body>
   <!-- Page Loader -->
@@ -52,6 +56,7 @@
         <li><div class="sidebar-link" data-target="panel-create">➕ Create Competition</div></li>
         <li><div class="sidebar-link" data-target="panel-registrations">👥 Manage Entries</div></li>
         <li><div class="sidebar-link" data-target="panel-attendance">📋 Attendance Manager</div></li>
+        <li><div class="sidebar-link" data-target="panel-tournament">🏆 Tournament Manager</div></li>
         <li><div class="sidebar-link" data-target="panel-news-builder">📰 Publish Sports News</div></li>
       </ul>
       <div class="sidebar-footer">
@@ -236,14 +241,28 @@
               </div>
 
               <div class="form-group" style="grid-column: 1/-1;">
-                <label class="form-label">Event Banner File</label>
-                <div style="border: 2px dashed var(--glass-border); padding: 2rem; border-radius: var(--radius-md); text-align: center;">
-                  <span style="font-size: 2rem; display: block; margin-bottom: 0.5rem;">🖼️</span>
-                  <label class="form-label" style="cursor: pointer; color: var(--primary-light);">
-                    Browse banner image files
-                    <input type="file" id="comp-banner-file" style="display: none;" accept="image/*" />
-                  </label>
-                  <div id="banner-preview-text" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;">Default government placeholder applied if none chosen</div>
+                <label class="form-label">Event Photo / Thumbnail</label>
+                <div style="border: 2px dashed var(--glass-border); padding: 1.5rem; border-radius: var(--radius-md); text-align: center; background: rgba(255,255,255,0.02);">
+                  <div id="banner-preview-box" style="margin-bottom: 1.25rem; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <div style="position: relative; max-width: 440px; width: 100%; height: 210px; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--glass-border); box-shadow: 0 8px 24px rgba(0,0,0,0.35);">
+                      <img id="comp-banner-preview-img" src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=800&auto=format&fit=crop&q=60" alt="Event Thumbnail Preview" style="width: 100%; height: 100%; object-fit: cover;" />
+                      <span id="comp-banner-type-badge" class="badge" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); backdrop-filter: blur(4px); color: #fff; border: 1px solid rgba(255,255,255,0.2); font-size: 0.75rem;">
+                        Auto Sport Photo
+                      </span>
+                    </div>
+                  </div>
+                  <div style="display: flex; gap: 0.75rem; justify-content: center; align-items: center; flex-wrap: wrap;">
+                    <label class="btn btn-outline" style="cursor: pointer; padding: 0.6rem 1.25rem; font-size: 0.85rem; margin-bottom: 0;">
+                      📷 Upload Custom Event Photo
+                      <input type="file" id="comp-banner-file" style="display: none;" accept="image/*" />
+                    </label>
+                    <button type="button" id="comp-banner-reset-btn" class="btn btn-ghost" style="padding: 0.6rem 1rem; font-size: 0.85rem; display: none; color: var(--danger);">
+                      ✕ Use Default Sport Photo
+                    </button>
+                  </div>
+                  <div id="banner-preview-text" style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.75rem;">
+                    If no custom photo is uploaded, a related photo for the chosen sport will automatically be used as the thumbnail.
+                  </div>
                 </div>
               </div>
             </div>
@@ -333,7 +352,69 @@
         </div>
 
         <!-- ==========================================
-             PANEL 5: PUBLISH SPORTS NEWS / ANNOUNCEMENTS
+             PANEL 5: TOURNAMENT MANAGER (BRACKETS)
+             ========================================== -->
+        <div class="dash-panel" id="panel-tournament">
+          <div class="dash-header">
+            <div>
+              <h2 class="dash-title">🏆 Tournament Manager</h2>
+              <p class="dash-subtitle">Generate brackets, record live scores, advance winners &amp; issue certificates.</p>
+            </div>
+          </div>
+
+          <!-- ===== SETUP CARD ===== -->
+          <div class="glass-card tourney-setup-card">
+            <h3 class="panel-section-title">⚙️ Bracket Setup</h3>
+            <div class="tourney-setup-grid">
+              <div class="form-group">
+                <label class="form-label" for="tourney-comp-select">Competition</label>
+                <select id="tourney-comp-select" class="form-control">
+                  <option value="">Select a competition…</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="tourney-format-select">Tournament Format</label>
+                <select id="tourney-format-select" class="form-control">
+                  <option value="single-elim">Single Elimination (Knockout)</option>
+                  <option value="round-robin">Round Robin (League)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 0.5rem;">
+              <label class="form-label" for="tourney-participants">
+                Participants
+                <small style="color: var(--text-muted); font-weight: 400;">— prefilled from approved registrations; one name per line, edit freely</small>
+              </label>
+              <textarea id="tourney-participants" class="form-control" rows="5"
+                        placeholder="Select a competition to auto-load approved athletes, or type one name per line…"></textarea>
+              <p class="tourney-participant-hint" id="tourney-participant-hint"></p>
+            </div>
+
+            <div class="tourney-setup-actions">
+              <button class="btn btn-primary" id="tourney-generate-btn" type="button">⚡ Generate Bracket</button>
+              <span class="tourney-status-pill" id="tourney-status-pill" hidden></span>
+            </div>
+          </div>
+
+          <!-- ===== BRACKET VIEWPORT ===== -->
+          <div class="glass-card tourney-board-card" id="tourney-board-card" hidden>
+            <div class="tourney-board-header">
+              <div>
+                <h3 class="panel-section-title" style="margin-bottom: 0.2rem;" id="tourney-board-title">Tournament Bracket</h3>
+                <p class="nada-helper-text" id="tourney-board-sub">Enter scores to advance winners.</p>
+              </div>
+              <div class="tourney-board-actions">
+                <button class="btn btn-outline" id="tourney-complete-btn" type="button" disabled>🏁 Mark Tournament Completed</button>
+                <button class="btn btn-primary" id="tourney-certs-btn" type="button" disabled>📜 Generate Certificates</button>
+              </div>
+            </div>
+            <div id="bracket-viewport" class="bracket-viewport"></div>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             PANEL 6: PUBLISH SPORTS NEWS / ANNOUNCEMENTS
              ========================================== -->
         <div class="dash-panel" id="panel-news-builder">
           <div class="dash-header">
@@ -405,10 +486,32 @@
     </div>
   </div>
 
+  <!-- ===== CERTIFICATE RESULTS MODAL ===== -->
+  <div class="modal-overlay" id="cert-modal">
+    <div class="modal-content" style="max-width: 640px;">
+      <span class="modal-close" id="cert-modal-close">✕</span>
+      <h3 class="panel-section-title">📜 Generate Certificates</h3>
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;" id="cert-modal-sub">
+        Government-branded Merit &amp; Participation certificates, auto-filled from final standings.
+      </p>
+      <div style="display: flex; justify-content: flex-end; margin-bottom: 0.75rem;">
+        <button class="btn btn-primary" id="cert-download-all-btn" type="button" style="padding: 0.45rem 1rem; font-size: 0.8rem;">⬇️ Download All</button>
+      </div>
+      <div class="cert-result-list" id="cert-result-list">
+        <!-- Dynamic per-participant rows -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Off-screen certificate render stage (html2canvas target) -->
+  <div id="certificate-stage" aria-hidden="true"
+       style="position: fixed; left: -10000px; top: 0; width: 1123px; height: 794px; pointer-events: none;"></div>
+
   <!-- Toast Notification Container -->
   <div id="toast-container" class="toast-container"></div>
 
   <!-- Scripts -->
+  <script src="/js/image-fallback.js"></script>
   <script type="module" src="../../js/firebase-config.js"></script>
   <script type="module" src="../../js/organizer-dash.js"></script>
 </body>

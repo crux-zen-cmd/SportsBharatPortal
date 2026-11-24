@@ -9,7 +9,9 @@
       document.documentElement.setAttribute('data-theme', theme);
     })();
   </script>
-  <title>Login | National Sports Management Portal</title>
+  <meta name="description" content="Sign in to SportsBharat — India's national sports portal. Access your government-validated athlete, organizer, or administrator dashboard." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <title>Login | SportsBharat — National Sports Portal</title>
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -115,9 +117,10 @@
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
   <a href="../../index.html" class="back-home btn btn-ghost">← Back to Portal</a>
 
-  <div class="auth-wrapper">
+  <div id="main-content" class="auth-wrapper">
     <div class="auth-bg-art"></div>
 
     <div class="auth-card glass-card">
@@ -125,6 +128,16 @@
         <div class="auth-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" alt="Ashoka Stambh" style="height:56px;width:auto;"></div>
         <h1 class="auth-title">SportsBharat Sign In</h1>
         <p class="auth-subtitle">Access your government-validated dashboard</p>
+      </div>
+
+      <!-- Quick One-Click Demo Access -->
+      <div style="background: rgba(59, 130, 246, 0.08); border: 1px dashed var(--primary-light); border-radius: var(--radius-md); padding: 0.85rem; margin-bottom: 1.5rem; text-align: center;">
+        <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-primary); display: block; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px;">⚡ Instant Demo Sign-In (1-Click)</span>
+        <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+          <button type="button" class="btn btn-primary" onclick="window.quickDemoLogin('user')" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">🏃 Athlete</button>
+          <button type="button" class="btn btn-outline" onclick="window.quickDemoLogin('organizer')" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">🏢 Organizer</button>
+          <button type="button" class="btn btn-ghost" onclick="window.quickDemoLogin('admin')" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">🏛️ Admin</button>
+        </div>
       </div>
 
       <form id="login-form">
@@ -159,13 +172,13 @@
       <h2 class="tsv-title">Two-Step Verification</h2>
       <p class="tsv-desc">To secure your account, enter the 6-digit verification code sent to your registered email.</p>
       
-      <div class="tsv-code-container">
-        <input type="text" class="tsv-otp-input" maxlength="1" data-index="0" autofocus />
-        <input type="text" class="tsv-otp-input" maxlength="1" data-index="1" />
-        <input type="text" class="tsv-otp-input" maxlength="1" data-index="2" />
-        <input type="text" class="tsv-otp-input" maxlength="1" data-index="3" />
-        <input type="text" class="tsv-otp-input" maxlength="1" data-index="4" />
-        <input type="text" class="tsv-otp-input" maxlength="1" data-index="5" />
+      <div class="tsv-code-container" role="group" aria-label="6-digit verification code">
+        <input type="text" class="tsv-otp-input" maxlength="1" data-index="0" autofocus aria-label="Digit 1 of verification code" inputmode="numeric" autocomplete="one-time-code" />
+        <input type="text" class="tsv-otp-input" maxlength="1" data-index="1" aria-label="Digit 2 of verification code" inputmode="numeric" />
+        <input type="text" class="tsv-otp-input" maxlength="1" data-index="2" aria-label="Digit 3 of verification code" inputmode="numeric" />
+        <input type="text" class="tsv-otp-input" maxlength="1" data-index="3" aria-label="Digit 4 of verification code" inputmode="numeric" />
+        <input type="text" class="tsv-otp-input" maxlength="1" data-index="4" aria-label="Digit 5 of verification code" inputmode="numeric" />
+        <input type="text" class="tsv-otp-input" maxlength="1" data-index="5" aria-label="Digit 6 of verification code" inputmode="numeric" />
       </div>
 
       <button id="verify-tsv-btn" class="btn btn-primary" style="width: 100%; padding: 0.8rem; margin-top: 1.5rem;">

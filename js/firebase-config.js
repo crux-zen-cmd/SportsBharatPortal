@@ -5,7 +5,7 @@
 // Standard Web App Firebase Config Template
 // Replace these with actual environment keys when deploying.
 const firebaseConfig = {
-    apiKey: "AIzaSyCLxgT78u7dmZa6NYNXaEWBZBxsmPOsAOM",
+  apiKey: "AIzaSyCLxgT78u7dmZa6NYNXaEWBZBxsmPOsAOM",
   authDomain: "sportsbharat-portal-yash.firebaseapp.com",
   projectId: "sportsbharat-portal-yash",
   storageBucket: "sportsbharat-portal-yash.firebasestorage.app",
@@ -23,14 +23,93 @@ let storage = null;
 let analytics = null;
 let messaging = null;
 
+import { VERIFIED_INDIAN_COMPETITIONS } from './live-competitions-service.js';
+import { getEventRelatedPhoto } from './image-fallback.js';
+
 // Initialize Simulated/Mock Database for immediate client-side testing
 class SimulatedFirestore {
   constructor() {
-    this.storageKey = 'sports_portal_db';
+    this.storageKey = 'sports_portal_db_v4';
     this.listeners = {};
     if (!localStorage.getItem(this.storageKey)) {
       this.seedDummyData();
+    } else {
+      this.ensureDataIntegrity();
     }
+  }
+
+  ensureDataIntegrity() {
+    try {
+      const data = this.getData();
+      if (!data) {
+        this.seedDummyData();
+        return;
+      }
+      let modified = false;
+      if (!data.competitions || Object.keys(data.competitions).length === 0) {
+        data.competitions = {};
+        if (Array.isArray(VERIFIED_INDIAN_COMPETITIONS)) {
+          VERIFIED_INDIAN_COMPETITIONS.forEach(c => {
+            const photo = c.thumbnail || c.bannerUrl || (typeof getEventRelatedPhoto === 'function' ? getEventRelatedPhoto(c.sportType, c.title) : '');
+            data.competitions[c.id] = { ...c, thumbnail: photo, bannerUrl: photo };
+          });
+          modified = true;
+        }
+      } else {
+        Object.values(data.competitions).forEach(c => {
+          if (!c.thumbnail || !c.bannerUrl) {
+            const photo = c.thumbnail || c.bannerUrl || (typeof getEventRelatedPhoto === 'function' ? getEventRelatedPhoto(c.sportType, c.title) : '');
+            if (photo) {
+              c.thumbnail = c.thumbnail || photo;
+              c.bannerUrl = c.bannerUrl || photo;
+              modified = true;
+            }
+          }
+        });
+      }
+      if (!data.registrations || Object.keys(data.registrations).length === 0) {
+        data.registrations = this.getSeedRegistrations();
+        modified = true;
+      }
+      if (modified) {
+        this.saveData(data);
+      }
+    } catch (e) {
+      console.warn('[SimulatedFirestore] ensureDataIntegrity failed:', e);
+    }
+  }
+
+  getSeedRegistrations() {
+    return {
+      "reg_demo_1": {
+        id: "reg_demo_1",
+        competitionId: "live_bengaluru_open_athletics_2026",
+        competitionTitle: "Bengaluru Open National Athletics Championship",
+        sportType: "Athletics",
+        dateTime: "2026-07-20T07:00",
+        userId: "user_demo",
+        userName: "Rajesh Kumar",
+        regType: "Athlete / Player",
+        idProof: "1234 5678 9012",
+        status: "approved",
+        attended: true,
+        timestamp: "2026-05-10T10:00:00.000Z"
+      },
+      "reg_demo_2": {
+        id: "reg_demo_2",
+        competitionId: "live_national_cricket_trophy_2026",
+        competitionTitle: "All India Inter-State T20 Cricket Championship 2026",
+        sportType: "Cricket",
+        dateTime: "2026-10-05T09:30",
+        userId: "user_demo",
+        userName: "Rajesh Kumar",
+        regType: "Athlete / Player",
+        idProof: "1234 5678 9012",
+        status: "pending",
+        attended: false,
+        timestamp: "2026-05-18T14:30:00.000Z"
+      }
+    };
   }
 
   seedDummyData() {
@@ -90,66 +169,150 @@ class SimulatedFirestore {
         { id: "hockey", title: "Hockey", icon: "🏑", category: "Team" },
         { id: "swimming", title: "Swimming", icon: "🏊", category: "Aquatics" }
       ],
-      competitions: {
-        "comp_cricket_2026": {
-          id: "comp_cricket_2026",
-          title: "National Grassroots Under-19 Cricket Cup",
-          sportType: "Cricket",
-          description: "A premier tournament for identifying potential national players for the Under-19 squad.",
-          venue: "M. Chinnaswamy Stadium, Bangalore",
-          state: "Karnataka",
-          city: "Bangalore",
-          dateTime: "2026-06-15T09:00",
-          maxParticipants: 200,
-          regFee: "500",
-          rules: "Standard ICC rules apply. Mandatory school/college registration letter required.",
-          prizeDetails: "First prize: ₹5,00,000, Second prize: ₹2,50,000, Third prize: ₹1,00,000",
-          bannerUrl: "https://images.unsplash.com/photo-1540747737956-37872404a87a?w=800&auto=format&fit=crop&q=60",
-          organizerId: "org_demo",
-          organizerName: "Dr. Sunita Sharma",
-          status: "upcoming",
-          createdAt: "2026-05-10T12:00:00Z"
-        },
-        "comp_kabaddi_2026": {
-          id: "comp_kabaddi_2026",
-          title: "Bharat Kabaddi Pro League - Delhi Qualifiers",
-          sportType: "Kabaddi",
-          description: "Regional qualifiers for the upcoming Pro Kabaddi development tier.",
-          venue: "Indira Gandhi Indoor Stadium, New Delhi",
-          state: "Delhi",
-          city: "New Delhi",
-          dateTime: "2026-05-28T16:00",
-          maxParticipants: 120,
-          regFee: "0",
-          rules: "Standard AKFI rules. Group weights capped at 85kg max.",
-          prizeDetails: "Direct entry into Bharat Pro League camp + ₹2,00,000 grant",
-          bannerUrl: "https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&auto=format&fit=crop&q=60",
-          organizerId: "org_demo",
-          organizerName: "Dr. Sunita Sharma",
-          status: "ongoing",
-          createdAt: "2026-05-01T10:00:00Z"
-        },
-        "comp_badminton_2026": {
-          id: "comp_badminton_2026",
-          title: "All-India Open Badminton Championship",
-          sportType: "Badminton",
-          description: "Annual national ranking championship. Open to players above 16 years.",
-          venue: "Pullela Gopichand Badminton Academy, Hyderabad",
-          state: "Telangana",
-          city: "Hyderabad",
-          dateTime: "2026-04-10T08:00",
-          maxParticipants: 300,
-          regFee: "1000",
-          rules: "BAI standards. Single-elimination tree format.",
-          prizeDetails: "National ranking points + ₹10,00,000 aggregate pool prize.",
-          bannerUrl: "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=800&auto=format&fit=crop&q=60",
-          organizerId: "org_demo",
-          organizerName: "Dr. Sunita Sharma",
-          status: "completed",
-          createdAt: "2026-03-01T09:00:00Z"
+      competitions: (() => {
+        const comps = {};
+        if (Array.isArray(VERIFIED_INDIAN_COMPETITIONS)) {
+          VERIFIED_INDIAN_COMPETITIONS.forEach(c => { comps[c.id] = c; });
         }
-      },
-      registrations: {},
+        return comps;
+      })(),
+      squads: [
+        {
+          id: "squad_1",
+          authorName: "Rahul Verma",
+          authorRole: "Team Captain • Fast Bowler",
+          authorAvatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=60",
+          roleNeeded: "Express Pace Bowler (130+ km/h)",
+          sport: "Cricket",
+          tourneyTarget: "National Grassroots U-19 Cup",
+          city: "Bangalore, Karnataka",
+          contactPhone: "+91 98450 12345",
+          message: "We need an opening strike bowler who can bowl tight spells with the new ball at Chinnaswamy.",
+          postedAt: "2 hours ago"
+        },
+        {
+          id: "squad_2",
+          authorName: "Debashish Roy",
+          authorRole: "Midfield Playmaker",
+          authorAvatar: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=150&auto=format&fit=crop&q=60",
+          roleNeeded: "Centre-Back & Sweeper",
+          sport: "Football",
+          tourneyTarget: "135th Durand Cup Open Qualifier",
+          city: "Kolkata, West Bengal",
+          contactPhone: "+91 98300 67890",
+          message: "Forming a squad of collegiate footballers for the Durand Cup open club qualification bracket.",
+          postedAt: "5 hours ago"
+        },
+        {
+          id: "squad_3",
+          authorName: "Amit Hooda",
+          authorRole: "Main Raider",
+          authorAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=60",
+          roleNeeded: "Right Corner Specialist & Ankle Holder",
+          sport: "Kabaddi",
+          tourneyTarget: "Bharat Kabaddi Pro League - Delhi",
+          city: "Rohtak / Delhi NCR",
+          contactPhone: "+91 94160 55443",
+          message: "Solid 7-man team searching for an experienced right corner to stop bonus raids.",
+          postedAt: "1 day ago"
+        },
+        {
+          id: "squad_4",
+          authorName: "Ananya Reddy",
+          authorRole: "State Ranked Singles Player",
+          authorAvatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=60",
+          roleNeeded: "Mixed Doubles Partner (BWF/BAI)",
+          sport: "Badminton",
+          tourneyTarget: "BWF Syed Modi International",
+          city: "Hyderabad, Telangana",
+          contactPhone: "+91 99890 11223",
+          message: "Looking for an aggressive front-court partner for the upcoming national mixed doubles trials.",
+          postedAt: "1 day ago"
+        }
+      ],
+      quizzes: [
+        {
+          id: "quiz_cricket_laws",
+          title: "BCCI & MCC Laws of Cricket IQ",
+          category: "Cricket Rules",
+          duration: "5 Mins • 10 Qs",
+          desc: "Test your mastery over LBW criteria, DRS protocols, Dead Ball rules, and boundary countbacks.",
+          perks: ["🏅 Official Digital Badge", "⚡ 100 Talent XP Points"],
+          questions: [
+            {
+              q: "Under MCC Law 36, which condition must be met for an LBW dismissal when the batsman attempts a stroke?",
+              options: [
+                "Ball must pitch outside leg stump",
+                "Ball must impact in line with stumps or pitch in line",
+                "Impact can be outside off stump even if batsman offers a stroke",
+                "The bowler must appeal before the ball touches the pitch"
+              ],
+              correct: 1
+            },
+            {
+              q: "How many fielders are permitted outside the 30-yard fielding ring during the Powerplay overs in T20I cricket?",
+              options: ["Max 3 fielders", "Max 2 fielders", "Max 4 fielders", "No fielders"],
+              correct: 1
+            },
+            {
+              q: "What is the official penalty run award given to the batting team if a fielding helmet placed on ground is hit by the ball?",
+              options: ["3 Penalty Runs", "5 Penalty Runs", "4 Penalty Runs", "Dead ball with no penalty"],
+              correct: 1
+            }
+          ]
+        },
+        {
+          id: "quiz_football_tactics",
+          title: "FIFA Football Tactics & VAR Rules",
+          category: "Football",
+          duration: "4 Mins • 8 Qs",
+          desc: "Analyze offside phases, inverted fullback tactics, high-press pressing triggers, and VAR intervention thresholds.",
+          perks: ["⭐ Pro Tactical Badge", "⚡ 80 Talent XP Points"],
+          questions: [
+            {
+              q: "Can a player be caught offside directly from a throw-in, goal kick, or corner kick?",
+              options: [
+                "Yes, offside applies to all set pieces",
+                "No, offside offense cannot occur directly from these three restarts",
+                "Only if the player is in the 6-yard box",
+                "Only in international matches"
+              ],
+              correct: 1
+            },
+            {
+              q: "Under modern IFAB laws, for which 4 match-changing scenarios can VAR intervene?",
+              options: [
+                "Goals, Penalty decisions, Direct Red Cards, Mistaken Identity",
+                "Free kicks, Corners, Yellow cards, Throw-ins",
+                "Offside inside center circle, Substitutions, Ball out of bounds",
+                "Handball outside the penalty box only"
+              ],
+              correct: 0
+            }
+          ]
+        },
+        {
+          id: "quiz_kabaddi_rules",
+          title: "Pro Kabaddi Rules & Strategic IQ",
+          category: "Kabaddi",
+          duration: "4 Mins • 8 Qs",
+          desc: "Master Super Tackle point calculations, Do-or-Die raid sequences, Lobby rules, and Bonus line criteria.",
+          perks: ["💪 Kabaddi Expert Badge", "⚡ 80 Talent XP Points"],
+          questions: [
+            {
+              q: "How many points does a defending team earn for executing a successful 'Super Tackle' in Pro Kabaddi?",
+              options: ["1 Point", "2 Points", "3 Points", "4 Points"],
+              correct: 1
+            },
+            {
+              q: "A raider must have a minimum of how many defending players on the mat to be eligible to score a Bonus point?",
+              options: ["5 or more defenders", "6 or 7 defenders", "At least 4 defenders", "Any number of defenders"],
+              correct: 1
+            }
+          ]
+        }
+      ],
+      registrations: this.getSeedRegistrations(),
       notifications: [
         {
           id: "notif_1",
@@ -231,6 +394,13 @@ class SimulatedFirestore {
   async getCollection(collectionName) {
     const data = this.getData();
     const col = data[collectionName] || {};
+    if (Array.isArray(col)) {
+      return col.map((item, idx) => ({
+        id: item.id || `item_${idx}`,
+        ...item,
+        data: () => item
+      }));
+    }
     return Object.keys(col).map(key => ({
       id: key,
       ...col[key],
@@ -241,7 +411,16 @@ class SimulatedFirestore {
   async setDoc(collection, docId, docData) {
     const data = this.getData();
     if (!data[collection]) data[collection] = {};
-    data[collection][docId] = { ...data[collection][docId], ...docData };
+    if (Array.isArray(data[collection])) {
+      const idx = data[collection].findIndex(item => item.id === docId);
+      if (idx >= 0) {
+        data[collection][idx] = { ...data[collection][idx], ...docData, id: docId };
+      } else {
+        data[collection].push({ ...docData, id: docId });
+      }
+    } else {
+      data[collection][docId] = { ...data[collection][docId], ...docData, id: docId };
+    }
     this.saveData(data);
     return { success: true };
   }
@@ -277,7 +456,7 @@ class SimulatedFirestore {
     this.listeners[path].push(callback);
     // Initial call
     callback(this.extractCollection(this.getData(), path));
-    
+
     // Return unsubscribe function
     return () => {
       this.listeners[path] = this.listeners[path].filter(cb => cb !== callback);
@@ -346,7 +525,7 @@ class SimulatedAuth {
     }
 
     const uid = 'usr_' + Math.random().toString(36).substr(2, 9);
-    
+
     const newUser = {
       uid,
       email,
@@ -359,7 +538,7 @@ class SimulatedAuth {
 
     const targetCollection = role === 'admin' ? 'admins' : role === 'organizer' ? 'organizers' : 'users';
     await firestore.setDoc(targetCollection, uid, newUser);
-    
+
     // Trigger automated initial notification
     await firestore.addDoc('notifications', {
       userId: uid,

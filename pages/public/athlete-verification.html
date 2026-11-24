@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Athlete Verification | SportsBharat</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Inter, Arial, sans-serif;
+      background: #07111f;
+      color: #f8fafc;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: radial-gradient(circle at top, #1d4ed8 0%, #07111f 60%);
+    }
+    .card {
+      width: min(720px, 100%);
+      border-radius: 24px;
+      padding: 24px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(255,255,255,0.16);
+      box-shadow: 0 22px 50px rgba(2, 6, 23, 0.35);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.18);
+      color: #34d399;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    .meta { color: #cbd5e1; line-height: 1.7; }
+    .chip { display: inline-block; padding: 0.35rem 0.6rem; border-radius: 999px; background: rgba(255,255,255,0.08); margin-right: 0.4rem; margin-top: 0.35rem; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="badge">✓ Verified Athlete</div>
+    <h1 id="name">Athlete Name</h1>
+    <p class="meta" id="details">Active status and recent tournament records are shown here.</p>
+    <div id="tags" style="margin-top: 1rem;"></div>
+    <p class="meta" style="margin-top: 1rem;"><strong>SportsBharat public verification page</strong></p>
+  </main>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get('name') || 'Athlete Name';
+    const status = params.get('status') || 'Active';
+    const sport = params.get('sport') || 'Multi-sport';
+    const state = params.get('state') || 'India';
+    const id = params.get('id') || 'SB-2026-0000';
+    const participations = params.get('participations') || 'No tournaments listed yet';
+
+    document.getElementById('name').textContent = name;
+    document.getElementById('details').textContent = `${name} is currently ${status.toLowerCase()} and has verified public records on the SportsBharat portal.`;
+    document.getElementById('tags').innerHTML = `
+      <span class="chip">ID: ${id}</span>
+      <span class="chip">Sport: ${sport}</span>
+      <span class="chip">State: ${state}</span>
+      <span class="chip">Recent: ${participations}</span>
+    `;
+  </script>
+</body>
+</html>

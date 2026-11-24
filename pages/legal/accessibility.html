@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SportsBharat Accessibility Statement — our commitment to WCAG 2.1 Level AA and GIGW 3.0 compliance for all users including persons with disabilities." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <script>(function(){const t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);})();</script>
+  <title>Accessibility Statement | SportsBharat — National Sports Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="/css/landing.css" />
+  <style>
+    .legal-hero { padding: 100px 0 48px; background: var(--bg-primary); border-bottom: 1px solid var(--glass-border); }
+    .legal-body { max-width: 800px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+    .legal-body h2 { font-size: 1.4rem; font-weight: 700; margin: 2.5rem 0 0.75rem; color: var(--primary); }
+    .legal-body p, .legal-body li { color: var(--text-secondary); line-height: 1.8; margin-bottom: 0.75rem; }
+    .legal-body ul { padding-left: 1.5rem; }
+    .legal-updated { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem; }
+    .a11y-feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+    .a11y-feature { background: var(--bg-tertiary); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 1.25rem; }
+    .a11y-feature strong { display: block; margin-bottom: 0.4rem; color: var(--text-primary); }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <nav class="navbar scrolled" aria-label="Main Navigation">
+    <div class="nav-container">
+      <a href="/" class="nav-brand" aria-label="SportsBharat Home">
+        <svg width="32" height="32" viewBox="0 0 36 36" fill="none" aria-hidden="true"><circle cx="18" cy="18" r="17" stroke="#1e3a8a" stroke-width="2"/><text x="18" y="23" text-anchor="middle" fill="#1e3a8a" font-weight="800" font-size="14" font-family="Arial,sans-serif">SB</text></svg>
+        <div class="brand-text"><span class="brand-title">SportsBharat</span><span class="brand-subtitle">National Portal</span></div>
+      </a>
+      <div class="nav-links">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/pages/news.html" class="nav-link">News</a>
+        <a href="/pages/infrastructure.html" class="nav-link">Infrastructure</a>
+        <a href="/pages/contact.html" class="nav-link">Contact</a>
+      </div>
+      <a href="/pages/auth/login.html" class="btn btn-primary">Portal Login</a>
+    </div>
+  </nav>
+
+  <main id="main-content">
+    <header class="legal-hero">
+      <div class="container">
+        <p style="font-size:0.85rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.5rem;">Accessibility</p>
+        <h1 class="hero-title" style="font-size:2.5rem;">Accessibility Statement</h1>
+        <p class="legal-updated">Last reviewed: 1 June 2026 &nbsp;|&nbsp; Ministry of Youth Affairs and Sports, Government of India</p>
+      </div>
+    </header>
+
+    <div class="legal-body">
+      <p>SportsBharat is committed to ensuring digital accessibility for all users, including persons with disabilities, in compliance with the <strong>Guidelines for Indian Government Websites (GIGW) 3.0</strong>, <strong>WCAG 2.1 Level AA</strong>, and the <strong>Rights of Persons with Disabilities Act, 2016 (RPWD Act)</strong>.</p>
+
+      <h2>Accessibility Features on This Portal</h2>
+      <div class="a11y-feature-grid">
+        <div class="a11y-feature">
+          <strong>Font Size Controls</strong>
+          Use A− / A / A+ buttons in the top bar to decrease, reset, or increase text size across the entire portal.
+        </div>
+        <div class="a11y-feature">
+          <strong>High Contrast Mode</strong>
+          Toggle the 👁️ High Contrast button to switch to a black-and-yellow high-contrast theme that meets WCAG contrast requirements for low-vision users.
+        </div>
+        <div class="a11y-feature">
+          <strong>Bilingual Support</strong>
+          The portal is available in English and Hindi. Use EN / हिन्दी buttons to switch languages. All core content and labels translate accordingly.
+        </div>
+        <div class="a11y-feature">
+          <strong>Dark / Light Theme</strong>
+          Toggle between light and dark colour schemes using the 🌙 button. Preference is saved across sessions.
+        </div>
+        <div class="a11y-feature">
+          <strong>Skip Navigation</strong>
+          A "Skip to main content" link is available at the top of every page for keyboard users to bypass repeated navigation.
+        </div>
+        <div class="a11y-feature">
+          <strong>Keyboard Navigation</strong>
+          All interactive elements (buttons, links, form fields) are reachable and operable by keyboard. Focus indicators are clearly visible.
+        </div>
+        <div class="a11y-feature">
+          <strong>Screen Reader Support</strong>
+          Pages use semantic HTML5 landmarks (header, nav, main, footer), ARIA labels, and descriptive alt text on all images.
+        </div>
+        <div class="a11y-feature">
+          <strong>Form Accessibility</strong>
+          All form fields have associated labels. Error messages are programmatically associated with inputs. Required fields are marked.
+        </div>
+      </div>
+
+      <h2>Conformance Status</h2>
+      <p>SportsBharat partially conforms to WCAG 2.1 Level AA. "Partially conforms" means that some content does not yet fully meet the standard. Known limitations are listed below.</p>
+
+      <h2>Known Limitations</h2>
+      <ul>
+        <li>The interactive map on the Infrastructure page relies on a third-party library (Leaflet/OpenStreetMap). Map content may not be fully navigable by keyboard. A text-based facility list is provided as an accessible alternative.</li>
+        <li>Some news article images sourced from external APIs may lack descriptive captions beyond the article title. We apply fallback branded placeholder images when external sources are unavailable.</li>
+        <li>PDF documents linked from this portal may not be fully accessible. We are progressively remediating these.</li>
+      </ul>
+
+      <h2>Feedback and Contact</h2>
+      <p>We welcome feedback on the accessibility of SportsBharat. If you encounter barriers or require content in an alternative format, please contact us:</p>
+      <ul>
+        <li>Email: <a href="mailto:accessibility@sports.gov.in">accessibility@sports.gov.in</a></li>
+        <li>Phone: +91 11 2338 1234 (Mon–Fri, 9:00–17:30 IST)</li>
+        <li>Online: <a href="/pages/contact.html">Contact Form</a></li>
+      </ul>
+      <p>We aim to respond to accessibility feedback within 2 working days.</p>
+
+      <h2>Formal Complaints</h2>
+      <p>If you are not satisfied with our response, you may contact the <strong>Chief Commissioner for Persons with Disabilities</strong>, Ministry of Social Justice and Empowerment, Government of India at <a href="https://ccdisabilities.nic.in" target="_blank" rel="noopener">ccdisabilities.nic.in</a>.</p>
+
+      <h2>Technical Specifications</h2>
+      <p>This portal relies on the following technologies: HTML5, CSS3, JavaScript (ES2020). Compatibility is tested with Chrome, Firefox, and Edge, and with NVDA and VoiceOver screen readers.</p>
+    </div>
+  </main>
+
+  <footer class="main-footer">
+    <div class="container footer-bottom">
+      <p>&copy; 2026 SportsBharat Portal. Developed under the National Digital Sports Initiative. &nbsp;|&nbsp;
+        <a href="/pages/legal/privacy-policy.html">Privacy Policy</a> &nbsp;|&nbsp;
+        <a href="/pages/legal/terms.html">Terms of Service</a> &nbsp;|&nbsp;
+        <a href="/pages/legal/disclaimer.html">Disclaimer</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

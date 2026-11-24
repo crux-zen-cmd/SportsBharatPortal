@@ -200,8 +200,8 @@ function renderFeaturedArticle(article) {
   return `
     <div class="featured-article-inner">
       <div class="featured-img-wrap">
-        <img src="${imgSrc}" alt="${escapeHtml(article.title)}" class="featured-img" 
-             onerror="this.src='https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&auto=format&fit=crop&q=60'" />
+        <img src="${imgSrc}" alt="${escapeHtml(article.title)}" class="featured-img"
+             data-category="${escapeHtml(article.category || 'default')}" />
         <div class="featured-overlay"></div>
         ${article.isLive ? '<div class="featured-live-badge"><span class="live-pulse"></span>LIVE</div>' : ''}
       </div>
@@ -247,7 +247,7 @@ function renderNewsCard(article) {
     <article class="news-card" onclick="window.open('${article.link}', '_blank')">
       <div class="news-card-img-wrap">
         <img src="${imgSrc}" alt="${escapeHtml(article.title)}" class="news-card-img" loading="lazy"
-             onerror="this.src='https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&auto=format&fit=crop&q=60'" />
+             data-category="${escapeHtml(article.category || 'default')}" />
         ${article.isLive ? '<span class="card-live-badge"><span class="live-pulse-sm"></span>LIVE</span>' : ''}
       </div>
       <div class="news-card-body">
